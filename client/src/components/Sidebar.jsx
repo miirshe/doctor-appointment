@@ -42,7 +42,7 @@ const Sidebar = ({ openMenu, handDelete }) => {
                             >
                                 <res.icon size={20} />
                                 <span className="text-lg">{res.name}</span>
-                                {res.ListLink && res.AddLink && isMenuOpen ? (
+                                {isMenuOpen ? (
                                     <IoIosArrowUp size={13} className="inline absolute right-3" />
                                 ) : (
                                     <IoIosArrowDown size={13} className="inline absolute right-3" />
@@ -52,18 +52,29 @@ const Sidebar = ({ openMenu, handDelete }) => {
                                 <div className="w-full ml-5 bg-[#EAEFF9] p-2 rounded space-y-2" onClick={handDelete}>
                                     <Link
                                         className="hover:text-blue-600 transition-all ease-in-out block text-base tracking-wide"
-                                        to={res.AddLink}
+                                        to={res.addLink}
                                         onClick={() => setSelectedMenu(null)}
                                     >
-                                        {res.AddLink}
+                                        {res.btnAdd}
                                     </Link>
                                     <Link
                                         className="hover:text-blue-600 transition-all ease-in-out block text-base tracking-wide"
-                                        to={res.ListLink}
+                                        to={res.listLink}
                                         onClick={() => setSelectedMenu(null)}
                                     >
-                                        {res.ListLink}
+                                        {res.btnList}
                                     </Link>
+
+                                    {
+                                        res.addDrScheduleLink && <Link
+                                        className="hover:text-blue-600 transition-all ease-in-out block text-base tracking-wide" 
+                                        to={res.addDrScheduleLink} onClick={() => setSelectedMenu(null)}>{res.btnAddSchedule}</Link>
+                                    }
+                                    {
+                                        res.listDrScheduleLink && <Link
+                                        className="hover:text-blue-600 transition-all ease-in-out block text-base tracking-wide" 
+                                        to={res.listDrScheduleLink} onClick={() => setSelectedMenu(null)}>{res.btnListSchedule}</Link>
+                                    }
                                 </div>
                             )}
                         </div>

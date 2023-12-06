@@ -2,7 +2,7 @@ import { CiSettings } from "react-icons/ci";
 import { MdOutlineClose, MdOutlineMenu } from "react-icons/md";
 const Header = ({ openMenu , setOpenMenu}) => {
   return (
-    <div className="w-full shadow bg-white p-6">
+    <div className="w-full bg-white p-6">
       <div className="w-full lg:w-[95%] flex flex-row justify-start lg:justify-end items-center gap-5">
         {
           openMenu ? <MdOutlineMenu className="block lg:hidden" size={25} onClick={ () => setOpenMenu(!openMenu)} /> 
