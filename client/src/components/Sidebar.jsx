@@ -26,7 +26,7 @@ const Sidebar = ({ openMenu, handDelete }) => {
             <hr className="w-[80%] mx-auto" />
             <div className="space-y-5 w-full p-5">
                 <div className="w-full">
-                    <Link to='/' className=" flex flex-row justify-start items-center gap-3">
+                    <Link to='/dashboard' className=" flex flex-row justify-start items-center gap-3">
                         <MdOutlineSpaceDashboard size={20} />
                         <span className="text-lg">Dashboard</span>
                     </Link>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const AddAppointment = () => {
     return (
-        <div className="w-full p-5">
+        <div className="w-full ">
             <h1 className=" space-x-5 p-2 text-lg">
                 <Link className=" cursor-pointer" to='/dashboard'>Dashboard</Link>
                 <span> / </span>
