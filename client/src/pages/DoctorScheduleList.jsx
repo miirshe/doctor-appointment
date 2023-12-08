@@ -10,6 +10,9 @@ const DoctorScheduleList = () => {
                 <span> / </span>
                 <span className="text-blue-600"> Doctor Schedule List</span>
             </h1>
+            <div className="w-full p-5 bg-white rounded shadow">
+
+            </div>
         </div>
     )
 }

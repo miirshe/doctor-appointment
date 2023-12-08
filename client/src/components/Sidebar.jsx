@@ -16,7 +16,7 @@ const Sidebar = ({ openMenu, handDelete }) => {
     }
     return (
         <div
-            className={`w-full lg:w-[20%] fixed left-0 bottom-0 top-20 lg:top-0 bg-white shadow p-2  space-y-7 overflow-y-auto ${openMenu ? "hidden lg:block" : "block"
+            className={`w-full lg:w-[20%] fixed left-0 bottom-0 top-20 lg:top-0 bg-white shadow p-2 z-30 space-y-7 overflow-y-auto ${openMenu ? "hidden lg:block" : "block"
                 }`}
         >
             <div className="flex flex-row justify-center items-center gap-3 mt-5">

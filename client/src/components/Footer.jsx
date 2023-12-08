@@ -2,7 +2,7 @@ import { BiHealth } from "react-icons/bi"
 
 const Footer = () => {
   return (
-    <div className="mt-24">
+    <div className="my-24">
       <p className="text-center text-lg flex flex-row justify-center items-center gap-2">
         <BiHealth className="inline text-blue-500" size={20} />
         <span>MediConnect </span>

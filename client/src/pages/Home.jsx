@@ -1,4 +1,4 @@
-import { About, HomeHeader, Navbar, Services } from "../ExportFiles"
+import { About, Footer, HomeHeader, Navbar, Services } from "../ExportFiles"
 
 const Home = () => {
     return (
@@ -7,6 +7,7 @@ const Home = () => {
             <Navbar/>
             <Services/>
             <About/>
+            <Footer/>
         </div>
     )
 }
