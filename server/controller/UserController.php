@@ -2,14 +2,17 @@
 header("Content-Type: application/json");
 require './model/Database.php';
 
-class UserController {
+class UserController
+{
     public $db;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->db = Database::db();
     }
 
-    function generateIdentity() {
+    function generateIdentity()
+    {
         $id = '';
 
         $data = array();
@@ -18,35 +21,31 @@ class UserController {
 
         $result = $this->db->query($query);
 
-        if($result){
+        if ($result) {
 
             $num_row = $result->num_rows;
 
-            if($num_row > 0){
+            if ($num_row > 0) {
 
                 $row = $result->fetch_assoc();
 
-                $id = ++ $row['id'];
-
-            }else{
+                $id = ++$row['id'];
+            } else {
 
                 $id = 'USR001';
-
             }
+        } else {
 
-        }else{
-
-            $data = ["status" => false , "data" => $this->db->error];
-
+            $data = ["status" => false, "data" => $this->db->error];
         }
 
         return $id;
-
     }
 
 
-    
-    public function getUsers(){
+
+    public function getUsers()
+    {
 
         $data = array();
 
@@ -56,19 +55,17 @@ class UserController {
 
         $result = $this->db->query($query);
 
-        if($result){
+        if ($result) {
 
-            while($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
 
                 $data[] = $row;
             }
 
-            $message = ["status" => true, "data" => $data]; 
-
-        }else{
+            $message = ["status" => true, "data" => $data];
+        } else {
 
             $message = ["status" => false, "data" => $this->db->error];
-
         }
 
         echo json_encode($message);
@@ -76,43 +73,44 @@ class UserController {
 
 
 
-    public function RegisterUser(){
+    public function registerUser()
+    {
 
         $id = $this->generateIdentity();
+
+        $requestData = json_decode(file_get_contents('php://input'));
 
         extract($_POST);
 
         $message = array();
 
-        if(!empty($name) && !empty($email) && !empty($password) && !empty($role)){
+        if (!empty($requestData->name) && !empty($requestData->email) && !empty($requestData->password) && !empty($requestData->role)) {
 
-            $hashed_password = md5($password);
+            $hashed_password = md5($requestData->password);
 
-            $query = "insert into users(`id`,`name`, `email`, `password`, `role`) values('$id','$name', '$email', '$hashed_password', '$role')";
+            $query = "insert into users(`id`,`name`, `email`, `password`, `role`) values('$id','$requestData->name', '$requestData->email', '$hashed_password', '$requestData->role')";
 
             $result = $this->db->query($query);
 
-            if($result){
+            if ($result) {
 
-                $message = ["status" => true , "data" => 'successfully registered'];
+                $message = ["status" => true, "data" => 'successfully registered'];
+            } else {
 
-            }else{
-
-                $message = ["status" => false , "data" =>$this->db->error];
-
+                $message = ["status" => false, "data" => $this->db->error];
             }
-        }else{
-            $message = ["status" => false, "data" => ['Please fill all the fields',$_POST]];
+        } else {
+            $message = ["status" => false, "data" => 'Please fill all the fields'];
         }
 
         echo json_encode($message);
-
     }
 
 
 
-    public function getUser($params){
-        if(!empty($params)){
+    public function getUser($params)
+    {
+        if (!empty($params)) {
 
             $id = $params;
 
@@ -123,35 +121,32 @@ class UserController {
             $query = "select * from users where id = '$id'";
 
             $result = $this->db->query($query);
-            if($result){
+            if ($result) {
 
-                while($row = $result->fetch_assoc()){
+                while ($row = $result->fetch_assoc()) {
 
                     $data[] = $row;
-
                 }
 
                 $message = ["status" => true, "data" => $data];
-
-            }else{
+            } else {
 
                 $message = ["status" => false, "data" => $this->db->error];
-
             }
-        }else{
+        } else {
 
             $message = ["status" => false, "data" => 'Params is missing'];
-
         }
         echo json_encode($message);
     }
 
-    
 
 
-    public function deleteUser($params){
 
-        if(!empty($params)){
+    public function deleteUser($params)
+    {
+
+        if (!empty($params)) {
 
             $message = array();
 
@@ -161,16 +156,14 @@ class UserController {
 
             $result = $this->db->query($query);
 
-            if($result){
+            if ($result) {
 
                 $message = ["status" => true, "data" => 'Successfully deleted'];
-
-            }else{
+            } else {
 
                 $message = ["status" => false, "data" => $this->db->error];
-
             }
-        }else{
+        } else {
             $message = ["status" => false, "data" => 'Params is missing'];
         }
 
@@ -178,4 +171,32 @@ class UserController {
     }
 
 
+    public function updateUser($params)
+    {
+        $message = [];
+        $id = $params;
+        if (!empty($params)) {
+            $requestData = json_decode(file_get_contents('php://input'));
+
+            if (
+                !empty($requestData->name) && !empty($requestData->email) && !empty($requestData->role)
+            ) {
+                $query = "UPDATE users SET `name` = '$requestData->name', `email` = '$requestData->email',`role` = '$requestData->role' WHERE `id` = '$id'";
+
+                $result = $this->db->query($query);
+
+                if ($result) {
+                    $message = ["status" => true, "data" => 'Successfully updated'];
+                } else {
+                    $message = ["status" => false, "data" => $this->db->error];
+                }
+            } else {
+                $message = ["status" => false, "data" => 'Required fields are missing'];
+            }
+        } else {
+            $message = ["status" => false, "data" => 'Params are missing'];
+        }
+
+        echo json_encode($message);
+    }
 }

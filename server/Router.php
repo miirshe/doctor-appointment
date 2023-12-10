@@ -1,13 +1,17 @@
 <?php
-
+header("Content-Type: application/json");
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 require './controller/UserController.php';
 
 $url = $_SERVER['REQUEST_URI'];
 $routes = [
     "/doctor-appointment/server/getUsers" => "UserController@getUsers",
-    "/doctor-appointment/server/registerUser" => "UserController@RegisterUser",
+    "/doctor-appointment/server/registerUser" => "UserController@registerUser",
     "/doctor-appointment/server/getUser/(\w+)" => "UserController@getUser",
     "/doctor-appointment/server/deleteUser/(\w+)" => "UserController@deleteUser",
+    "/doctor-appointment/server/updateUser/(\w+)" => "UserController@updateUser",
 ];
 
 foreach($routes as $key => $value){

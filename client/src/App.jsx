@@ -3,7 +3,7 @@ import {
   AddAppointment, AddDiagnoses, AddDoctorSchedule, 
   AddPatient, AddUser, AppointmentList, Dashboard, DashboardLayouts, 
   DiagnosesList, DoctorScheduleList, PatientList, PatientLogin, PatientRegister, UserList, UserLogin} from './ExportFiles'
-
+  import { Toaster } from 'react-hot-toast';
 const App = () => {
   return (
     <>
@@ -25,8 +25,10 @@ const App = () => {
         <Route path="diagnoses-list" element={<DiagnosesList/>}/>
         <Route path="user-list" element={<UserList/>}/>
         <Route path="add-user" element={<AddUser/>}/>
+        <Route path="add-user/:id" element={<AddUser/>}/>
       </Route>
     </Routes>
+    <Toaster />
     </>
   )
 }

@@ -17,7 +17,7 @@ const Sidebar = ({ openMenu, handDelete }) => {
                     {
                         data?.map(res => {
                             return (
-                                <NavLink to={`${res.link}`} className=" hover:bg-slate-300 transition-all ease-in-out p-2 flex flex-row justify-start items-center gap-2" key={res.id}>
+                                <NavLink to={`${res.link}`} className="hover:bg-slate-300 transition-all ease-in-out p-2 flex flex-row justify-start items-center gap-2" key={res.id}>
                                     <res.icon size={20} />
                                     <span>{res.name}</span>
                                 </NavLink>
