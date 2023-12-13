@@ -1,17 +1,8 @@
 <?php
 header("Content-Type: application/json");
-require './model/Database.php';
-
 class UserController
 {
-    public $db;
-
-    public function __construct()
-    {
-        $this->db = Database::db();
-    }
-
-    function generateIdentity()
+    function generateIdentity($db)
     {
         $id = '';
 
@@ -19,7 +10,7 @@ class UserController
 
         $query = "select * from users order by users.id desc limit 1";
 
-        $result = $this->db->query($query);
+        $result = $db->query($query);
 
         if ($result) {
 
@@ -36,7 +27,7 @@ class UserController
             }
         } else {
 
-            $data = ["status" => false, "data" => $this->db->error];
+            $data = ["status" => false, "data" => $db->error];
         }
 
         return $id;
@@ -44,7 +35,7 @@ class UserController
 
 
 
-    public function getUsers()
+    public function getUsers($db)
     {
 
         $data = array();
@@ -53,7 +44,7 @@ class UserController
 
         $query = "SELECT * FROM users";
 
-        $result = $this->db->query($query);
+        $result = $db->query($query);
 
         if ($result) {
 
@@ -65,7 +56,7 @@ class UserController
             $message = ["status" => true, "data" => $data];
         } else {
 
-            $message = ["status" => false, "data" => $this->db->error];
+            $message = ["status" => false, "data" => $db->error];
         }
 
         echo json_encode($message);
@@ -73,10 +64,10 @@ class UserController
 
 
 
-    public function registerUser()
+    public function registerUser($db)
     {
 
-        $id = $this->generateIdentity();
+        $id = $this->generateIdentity($db);
 
         $requestData = json_decode(file_get_contents('php://input'));
 
@@ -85,19 +76,22 @@ class UserController
         $message = array();
 
         if (!empty($requestData->name) && !empty($requestData->email) && !empty($requestData->password) && !empty($requestData->role)) {
-
+            $name = trim($requestData->name);
+            $email = trim($requestData->email);
+            $role = trim($requestData->role);
             $hashed_password = md5($requestData->password);
 
-            $query = "insert into users(`id`,`name`, `email`, `password`, `role`) values('$id','$requestData->name', '$requestData->email', '$hashed_password', '$requestData->role')";
+            $query = "INSERT INTO users(`id`,`name`, `email`, `password`, `role`) 
+            VALUES ('$id','$name', '$email', '$hashed_password', '$role')";
 
-            $result = $this->db->query($query);
+            $result = $db->query($query);
 
             if ($result) {
 
                 $message = ["status" => true, "data" => 'successfully registered'];
             } else {
 
-                $message = ["status" => false, "data" => $this->db->error];
+                $message = ["status" => false, "data" => $db->error];
             }
         } else {
             $message = ["status" => false, "data" => 'Please fill all the fields'];
@@ -108,7 +102,7 @@ class UserController
 
 
 
-    public function getUser($params)
+    public function getUser($db,$params)
     {
         if (!empty($params)) {
 
@@ -118,9 +112,9 @@ class UserController
 
             $message = array();
 
-            $query = "select * from users where id = '$id'";
+            $query = "SELECT * FROM users WHERE `id` = '$id'";
 
-            $result = $this->db->query($query);
+            $result = $db->query($query);
             if ($result) {
 
                 while ($row = $result->fetch_assoc()) {
@@ -131,7 +125,7 @@ class UserController
                 $message = ["status" => true, "data" => $data];
             } else {
 
-                $message = ["status" => false, "data" => $this->db->error];
+                $message = ["status" => false, "data" => $db->error];
             }
         } else {
 
@@ -143,7 +137,7 @@ class UserController
 
 
 
-    public function deleteUser($params)
+    public function deleteUser($db,$params)
     {
 
         if (!empty($params)) {
@@ -152,16 +146,16 @@ class UserController
 
             $id = $params;
 
-            $query = "delete from users where id = '$id'";
+            $query = "DELETE FROM users WHERE `id` = '$id'";
 
-            $result = $this->db->query($query);
+            $result = $db->query($query);
 
             if ($result) {
 
                 $message = ["status" => true, "data" => 'Successfully deleted'];
             } else {
 
-                $message = ["status" => false, "data" => $this->db->error];
+                $message = ["status" => false, "data" => $db->error];
             }
         } else {
             $message = ["status" => false, "data" => 'Params is missing'];
@@ -171,7 +165,7 @@ class UserController
     }
 
 
-    public function updateUser($params)
+    public function updateUser($db,$params)
     {
         $message = [];
         $id = $params;
@@ -181,14 +175,17 @@ class UserController
             if (
                 !empty($requestData->name) && !empty($requestData->email) && !empty($requestData->role)
             ) {
-                $query = "UPDATE users SET `name` = '$requestData->name', `email` = '$requestData->email',`role` = '$requestData->role' WHERE `id` = '$id'";
+                $name = trim($requestData->name);
+                $email = trim($requestData->email);
+                $role = trim($requestData->role);
+                $query = "UPDATE users SET `name` = '$name', `email` = '$email',`role` = '$role' WHERE `id` = '$id'";
 
-                $result = $this->db->query($query);
+                $result = $db->query($query);
 
                 if ($result) {
                     $message = ["status" => true, "data" => 'Successfully updated'];
                 } else {
-                    $message = ["status" => false, "data" => $this->db->error];
+                    $message = ["status" => false, "data" => $db->error];
                 }
             } else {
                 $message = ["status" => false, "data" => 'Required fields are missing'];

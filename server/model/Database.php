@@ -2,7 +2,7 @@
 
 class Database {
 
-    public static function db(){
+    public function db(){
         $host = "localhost";
         $user = "root";
         $pass = "";

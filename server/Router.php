@@ -3,8 +3,13 @@ header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
-require './controller/UserController.php';
-
+include './controller/UserController.php';
+include './controller/PatientController.php';
+include './controller/HospitalController.php';
+include './controller/DoctorController.php';
+include './model/Database.php';
+$connection = new Database();
+$db = $connection->db();
 $url = $_SERVER['REQUEST_URI'];
 $routes = [
     "/doctor-appointment/server/getUsers" => "UserController@getUsers",
@@ -12,6 +17,21 @@ $routes = [
     "/doctor-appointment/server/getUser/(\w+)" => "UserController@getUser",
     "/doctor-appointment/server/deleteUser/(\w+)" => "UserController@deleteUser",
     "/doctor-appointment/server/updateUser/(\w+)" => "UserController@updateUser",
+    "/doctor-appointment/server/getPatients" => "PatientController@getPatients",
+    "/doctor-appointment/server/registerPatient" => "PatientController@registerPatient",
+    "/doctor-appointment/server/updatePatient/(\w+)" => "PatientController@updatePatient",
+    "/doctor-appointment/server/deletePatient/(\w+)" => "PatientController@deletePatient",
+    "/doctor-appointment/server/getPatient/(\w+)" => "PatientController@getPatient",
+    "/doctor-appointment/server/createHospital" => "HospitalController@createHospital",
+    "/doctor-appointment/server/getHospitals" => "HospitalController@getHospitals",
+    "/doctor-appointment/server/getHospitals/(\w+)" => "HospitalController@getHospital",
+    "/doctor-appointment/server/updateHospital/(\w+)" => "HospitalController@updateHospital",
+    "/doctor-appointment/server/deleteHospital/(\w+)" => "HospitalController@deleteHospital",
+    "/doctor-appointment/server/createDoctor" => "DoctorController@createDoctor",
+    "/doctor-appointment/server/getDoctors" => "DoctorController@getDoctors",
+    "/doctor-appointment/server/getDoctor/(\w+)" => "DoctorController@getDoctor",
+    "/doctor-appointment/server/updateDoctor/(\w+)" => "DoctorController@updateDoctor",
+    "/doctor-appointment/server/deleteDoctor/(\w+)" => "DoctorController@deleteDoctor",
 ];
 
 foreach($routes as $key => $value){
@@ -22,9 +42,9 @@ foreach($routes as $key => $value){
         $methodName = $dividedRoutes[1];
         $controller = new $controllerName();
         if(isset($matches[1])){
-            $controller->$methodName($matches[1]);
+            $controller->$methodName($db,$matches[1]);
         }else{
-            $controller->$methodName();
+            $controller->$methodName($db);
         }
         exit();
     }
