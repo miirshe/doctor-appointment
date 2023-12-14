@@ -31,7 +31,7 @@ class DoctorController
         if (
             !empty($requestData->name) && !empty($requestData->email) && !empty($requestData->phone)
             && !empty($requestData->address) && !empty($requestData->password) && !empty($requestData->description)
-            && !empty($requestData->hos_id) && !empty($requestData->hos_name) && !empty($requestData->avatar_url) && !empty($id)
+            && !empty($requestData->hos_id) && !empty($requestData->image) && !empty($id)
         ) {
             $name = trim($requestData->name);
             $email = trim($requestData->email);
@@ -40,9 +40,8 @@ class DoctorController
             $password = md5($requestData->password);
             $description = trim($requestData->description);
             $hos_id = trim($requestData->hos_id);
-            $hos_name = trim($requestData->hos_name);
-            $query = "INSERT INTO doctors (`id`,`name`,`email`,`phone`,`address`,`hos_id`,`hos_name`,`description`,`password`,`image`)
-                VALUES('$id','$name','$email','$phone','$address','$hos_id','$hos_name','$description','$password','$requestData->image')";
+            $query = "INSERT INTO doctors (`id`,`name`,`email`,`phone`,`address`,`hos_id`,`description`,`password`,`image`)
+                VALUES('$id','$name','$email','$phone','$address','$hos_id','$description','$password','$requestData->image')";
 
             $result = $db->query($query);
 
@@ -107,8 +106,7 @@ class DoctorController
         if (
             !empty($requestData->name) && !empty($requestData->email) && !empty($requestData->phone)
             && !empty($requestData->address) && !empty($requestData->description)
-            && !empty($requestData->hos_id) && !empty($requestData->hos_name)
-            && !empty($requestData->avatar_url) && !empty($id)
+            && !empty($requestData->hos_id) && !empty($requestData->image) && !empty($id)
         ) {
             $name = trim($requestData->name);
             $email = trim($requestData->email);
@@ -116,12 +114,11 @@ class DoctorController
             $address = trim($requestData->address);
             $description = trim($requestData->description);
             $hos_id = trim($requestData->hos_id);
-            $hos_name = trim($requestData->hos_name);
             $verified = trim($requestData->verified);
             $image = $requestData->image;
             $query = "UPDATE doctors SET `name` = '$name', `email` = '$email', `phone` = '$phone',
-             `address` = '$address', `hos_id` = '$hos_id', `hos_name` = '$hos_name', 
-             `verified` = '$verified', `description` = '$description', `image` = '$image' WHERE `id` = '$id'";
+             `address` = '$address', `hos_id` = '$hos_id',  `verified` = '$verified', 
+             `description` = '$description', `image` = '$image' WHERE `id` = '$id'";
             $result = $db->query($query);
             if($result){
                 $message = ["status" => true, "data" => "successfully updated"];
