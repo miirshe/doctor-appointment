@@ -8,6 +8,7 @@ include './controller/PatientController.php';
 include './controller/HospitalController.php';
 include './controller/DoctorController.php';
 include './controller/ProfessionController.php';
+include './controller/DiagnosesController.php';
 include './model/Database.php';
 $connection = new Database();
 $db = $connection->db();
@@ -38,6 +39,11 @@ $routes = [
     "/doctor-appointment/server/getProfession/(\w+)" => "ProfessionController@getProfession",
     "/doctor-appointment/server/updateProfession/(\w+)" => "ProfessionController@updateProfession",
     "/doctor-appointment/server/deleteProfession/(\w+)" => "ProfessionController@deleteProfession",
+    "/doctor-appointment/server/createDiagnoses" => "DiagnosesController@createDiagnoses",
+    "/doctor-appointment/server/getDiagnoses" => "DiagnosesController@getDiagnoses",
+    "/doctor-appointment/server/getDiagnose/(\w+)" => "DiagnosesController@getDiagnose",
+    "/doctor-appointment/server/deleteDiagnose/(\w+)" => "DiagnosesController@deleteDiagnose",
+    "/doctor-appointment/server/updateDiagnose/(\w+)" => "DiagnosesController@updateDiagnose",
 ];
 
 foreach($routes as $key => $value){
