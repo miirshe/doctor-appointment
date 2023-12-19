@@ -4,13 +4,16 @@ import { IoIosArrowForward } from "react-icons/io"
 import { Link } from "react-router-dom"
 import * as Yup from 'yup'
 import { IoCloudUploadOutline } from 'react-icons/io5';
-const PatientRegister = () => {
+const DoctorRegister = () => {
     const initialRegister = {
         name: '',
         email: '',
         phone: '',
         address: '',
         password: '',
+        description: '',
+        hos_id: '',
+        hos_name: ''
     }
     const validationSchema = Yup.object({
         name: Yup.string().required('name field is required'),
@@ -18,6 +21,8 @@ const PatientRegister = () => {
         phone: Yup.number().required('phone field is required'),
         address: Yup.string().required('address field is required'),
         password: Yup.string().required('password field is required'),
+        description: Yup.string().required('description field is required'),
+        hos_name: Yup.string().required('hos_name field is required'),
     })
 
     const [images, setImages] = useState(null);
@@ -62,7 +67,7 @@ const PatientRegister = () => {
             <div className="w-full flex flex-row justify-start items-center gap-5">
                 <Link className=" hover:text-blue-600 transition-all ease-in-out" to='/'>Home</Link>
                 <IoIosArrowForward className="inline" size={15} />
-                <span>Patient Register</span>
+                <span>Doctor Register</span>
             </div>
             <div className="w-full md:w-[30%] mx-auto p-3 rounded">
                 <button onClick={handleImageUpload}>
@@ -72,7 +77,7 @@ const PatientRegister = () => {
             </div>
             <Formik onSubmit={handleSubmit} validationSchema={validationSchema} initialValues={initialRegister}>
                 <Form className="w-full shadow-md rounded space-y-4 p-5 mt-10">
-                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         <div className="w-full space-y-3">
                             <Field type="text" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='name' placeholder="Enter Name" />
                             <ErrorMessage name="name" component="div" className="text-red-500" />
@@ -81,20 +86,32 @@ const PatientRegister = () => {
                             <Field type="text" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='email' placeholder="Enter Email" />
                             <ErrorMessage name="email" component="div" className="text-red-500" />
                         </div>
-                    </div>
-                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="w-full space-y-3">
                             <Field type="number" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='phone' placeholder="Enter Phone" />
                             <ErrorMessage name="phone" component="div" className="text-red-500" />
                         </div>
+                    </div>
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="w-full space-y-3">
                             <Field type="text" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='address' placeholder="Enter Address" />
                             <ErrorMessage name="address" component="div" className="text-red-500" />
                         </div>
+                        <div className="w-full space-y-3">
+                            <Field type="password" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='password' placeholder="Enter Password" />
+                            <ErrorMessage name="password" component="div" className="text-red-500" />
+                        </div>
+
+                    </div>
+
+                    <div className="w-full space-y-3">
+                        <Field as="textarea" rows="4" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='description' placeholder="Enter Description" />
+                        <ErrorMessage name="description" component="div" className="text-red-500" />
                     </div>
                     <div className="w-full space-y-3">
-                        <Field type="password" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='password' placeholder="Enter Password" />
-                        <ErrorMessage name="password" component="div" className="text-red-500" />
+                        <Field as="select" rows="4" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='hos_name'>
+                            <option value="">-select hospital name--</option>
+                        </Field>
+                        <ErrorMessage name="hos_name" component="div" className="text-red-500" />
                     </div>
                     <button className="w-full md:w-fit px-3 py-2 bg-blue-600 text-white rounded hover:bg-white hover:text-blue-600
                     transition-all ease-in-out" type="submit">Register Now</button>
@@ -106,4 +123,4 @@ const PatientRegister = () => {
     )
 }
 
-export default PatientRegister
+export default DoctorRegister

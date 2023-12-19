@@ -1,18 +1,15 @@
-export { default as Header} from './components/Header';
-export { default as Footer} from './components/Footer';
-export { default as Sidebar} from './components/Sidebar';
-export { default as Dashboard } from './pages/Dashboard';
-export { default as AddPatient } from './pages/AddPatient';
-export { default as PatientList } from './pages/PatientList';
-export { default as AddDoctorSchedule } from './pages/AddDoctorSchedule';
-export { default as DoctorScheduleList } from './pages/DoctorScheduleList';
-export { default as AddAppointment } from './pages/AddAppointment';
-export { default as AppointmentList } from './pages/AppointmentList';
-export { default as AddDiagnoses } from './pages/AddDiagnoses';
-export { default as DiagnosesList } from './pages/DiagnosesList';
-export { default as DashboardLayouts } from './components/DashboardLayouts';
-export { default as UserLogin } from './auth/UserLogin';
-export { default as PatientLogin } from './auth/PatientLogin';
-export { default as PatientRegister } from './auth/PatientRegister';
-export { default as UserList } from './pages/UserList';
-export { default as AddUser } from './pages/AddUser';
+export { default as PageLayouts } from './pages/PageLayouts'
+export { default as Home } from './pages/Home'
+export { default as Header } from './components/Header'
+export { default as Footer } from './components/Footer'
+export { default as Navbar } from './components/Navbar'
+export { default as WhyYouChooseUs } from './components/WhyYouChooseUs'
+export { default as OurSpecialisty } from './components/OurSpecialisty'
+export { default as DoctorsSlider } from './components/DoctorsSlider'
+export { default as Subscribe } from './components/Subscribe'
+export { default as Contact } from './pages/Contact'
+export { default as About } from './pages/About'
+export { default as DoctorRegister } from './auth/DoctorRegister'
+export { default as DoctorLogin } from './auth/DoctorLogin'
+export { default as PatientLogin } from './auth/PatientLogin'
+export { default as PatientRegister } from './auth/PatientRegister'

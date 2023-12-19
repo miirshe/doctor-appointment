@@ -1,34 +1,22 @@
 import { Route, Routes } from "react-router-dom"
-import {
-  AddAppointment, AddDiagnoses, AddDoctorSchedule, 
-  AddPatient, AddUser, AppointmentList, Dashboard, DashboardLayouts, 
-  DiagnosesList, DoctorScheduleList, PatientList, PatientLogin, PatientRegister, UserList, UserLogin} from './ExportFiles'
-  import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import { About, Contact, DoctorLogin, DoctorRegister, Home, PageLayouts, PatientLogin, PatientRegister } from "./ExportFiles";
 const App = () => {
   return (
     <>
-    <Routes>
-      <Route path="/user-login" element={<UserLogin/>} />
-      <Route path="/patient-login" element={<PatientLogin/>} />
-      <Route path="/patient-register" element={<PatientRegister/>} />
-
-      <Route path="/" element={<DashboardLayouts/>}>
-        <Route index element={<Dashboard/>}/>
-        <Route path="dashboard" element={<Dashboard/>}/>
-        <Route path="add-dr-schedule" element={<AddDoctorSchedule/>}/>
-        <Route path="dr-schedule-list" element={<DoctorScheduleList/>}/>
-        <Route path="add-patient" element={<AddPatient/>}/>
-        <Route path="patient-list" element={<PatientList/>}/>
-        <Route path="add-appointment" element={<AddAppointment/>}/>
-        <Route path="appointment-list" element={<AppointmentList/>}/>
-        <Route path="add-diagnoses" element={<AddDiagnoses/>}/>
-        <Route path="diagnoses-list" element={<DiagnosesList/>}/>
-        <Route path="user-list" element={<UserList/>}/>
-        <Route path="add-user" element={<AddUser/>}/>
-        <Route path="add-user/:id" element={<AddUser/>}/>
-      </Route>
-    </Routes>
-    <Toaster />
+      <Routes>
+        <Route path="/" element={<PageLayouts />}>
+          <Route index element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/doctor-login" element={<DoctorLogin />} />
+          <Route path="/doctor-register" element={<DoctorRegister />} />
+          <Route path="/patient-login" element={<PatientLogin/>} />
+          <Route path="/patient-register" element={<PatientRegister/>} />
+        </Route>
+      </Routes>
+      <Toaster />
     </>
   )
 }
