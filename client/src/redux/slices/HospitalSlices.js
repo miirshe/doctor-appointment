@@ -12,7 +12,7 @@ export const HospitalSlices = createApi({
 
         createHospital : builder.mutation({
             query : (newHospital) => ({
-                url : '',
+                url : 'createHospital',
                 method : 'POST',
                 body : newHospital,
             }),
@@ -22,7 +22,7 @@ export const HospitalSlices = createApi({
 
         updateHospital : builder.mutation({
             query : ({id , updateHospital}) => ({
-                url : `/${id}`,
+                url : `updateHospital/${id}`,
                 method : 'POST',
                 body : updateHospital,
             }),
@@ -32,7 +32,7 @@ export const HospitalSlices = createApi({
 
         deleteHospital : builder.mutation({
             query : (id) => ({
-                url : `/${id}`,
+                url : `deleteHospital/${id}`,
                 method : 'POST',
             }),
             invalidatesTags : ['hospital'] 
@@ -41,7 +41,7 @@ export const HospitalSlices = createApi({
         getHospitals : builder.query({
             query : () => {
                 return {
-                    url : '',
+                    url : 'getHospitals',
                     method : 'GET',
                 }
             },

@@ -12,7 +12,7 @@ export const DoctorScheduleSlices = createApi({
 
         createDoctorSchedules: builder.mutation({
             query: (newDoctorSchedules) => ({
-                url: '',
+                url: 'createDoctorSchedule',
                 method: 'POST',
                 body: newDoctorSchedules
             }),
@@ -22,7 +22,7 @@ export const DoctorScheduleSlices = createApi({
 
         updateDoctorSchedules: builder.mutation({
             query: ({ id, updateDoctorSchedules }) => ({
-                url: `/${id}`,
+                url: `updateDoctorSchedule/${id}`,
                 method: 'POST',
                 body: updateDoctorSchedules
             }),
@@ -32,7 +32,7 @@ export const DoctorScheduleSlices = createApi({
 
         deleteDoctorSchedules: builder.mutation({
             query: (id) => ({
-                url: `/${id}`,
+                url: `deleteDoctorSchedule/${id}`,
                 method: 'POST',
             }),
             invalidatesTags: ['doctorSchedule']
@@ -42,7 +42,7 @@ export const DoctorScheduleSlices = createApi({
         getDoctorSchedules: builder.query({
             query: () => {
                 return {
-                    url: '',
+                    url: 'getDoctorSchedules',
                     method: 'GET'
                 }
             },

@@ -11,7 +11,7 @@ export const DoctorProfession = createApi({
 
         createDoctorProfession: builder.mutation({
             query: (newDoctorProfession) => ({
-                url: '',
+                url: 'createProfession',
                 method: 'POST',
                 body: newDoctorProfession
             }),
@@ -20,7 +20,7 @@ export const DoctorProfession = createApi({
 
         updateDoctorProfession: builder.mutation({
             query: ({ id, updateDoctorProfession }) => ({
-                url: `/${id}`,
+                url: `updateProfession/${id}`,
                 method: 'POST',
                 body: updateDoctorProfession
             }),
@@ -29,7 +29,7 @@ export const DoctorProfession = createApi({
 
         deleteDoctorProfession: builder.mutation({
             query: (id) => ({
-                url: `/${id}`,
+                url: `deleteProfession/${id}`,
                 method: 'POST',
             }),
             invalidatesTags: ['profession']
@@ -38,7 +38,7 @@ export const DoctorProfession = createApi({
         getDoctorSchedules : builder.query({
             query : () => {
                 return {
-                    url : '',
+                    url : 'getProfessions',
                     method : 'GET',
                 }
             },

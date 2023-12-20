@@ -11,7 +11,7 @@ export const DiagnosesSlices = createApi({
 
         createDiagnoses: builder.mutation({
             query: (newDiagnoses) => ({
-                url: '',
+                url: 'createDiagnoses',
                 method: 'POST',
                 body: newDiagnoses
             }),
@@ -20,7 +20,7 @@ export const DiagnosesSlices = createApi({
 
         updateDiagnoses: builder.mutation({
             query: ({ id, updateDiagnoses }) => ({
-                url: `/${id}`,
+                url: `updateDiagnose/${id}`,
                 method: 'POST',
                 body: updateDiagnoses
             }),
@@ -29,7 +29,7 @@ export const DiagnosesSlices = createApi({
 
         deleteDiagnoses: builder.mutation({
             query: (id) => ({
-                url: `/${id}`,
+                url: `deleteDiagnose/${id}`,
                 method: 'POST',
             }),
             invalidatesTags: ['diagnoses']
@@ -38,7 +38,7 @@ export const DiagnosesSlices = createApi({
         getDiagnoses: builder.query({
             query: () => {
                 return {
-                    url: '',
+                    url: 'getDiagnoses',
                     method: 'GET',
                 }
             },

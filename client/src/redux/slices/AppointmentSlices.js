@@ -11,7 +11,7 @@ export const AppointmentSlices = createApi({
 
         createAppointment: builder.mutation({
             query: (newAppointment) => ({
-                url: '',
+                url: 'createAppointment',
                 method: 'POST',
                 body: newAppointment
             }),
@@ -20,7 +20,7 @@ export const AppointmentSlices = createApi({
 
         updateAppointment: builder.mutation({
             query: ({ id, updateAppointment }) => ({
-                url: `/${id}`,
+                url: `updateAppointment/${id}`,
                 method: 'POST',
                 body: updateAppointment
             }),
@@ -29,7 +29,7 @@ export const AppointmentSlices = createApi({
 
         deleteAppointment: builder.mutation({
             query: (id) => ({
-                url: `/${id}`,
+                url: `deleteAppointment/${id}`,
                 method: 'POST',
             }),
             invalidatesTags: ['appointment']
@@ -38,7 +38,7 @@ export const AppointmentSlices = createApi({
         getAppointments : builder.query({
             query : () => {
                 return {
-                    url : '',
+                    url : 'getAppointments',
                     method : 'GET',
                 }
             },
