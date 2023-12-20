@@ -13,7 +13,6 @@ class Database {
         if(!$connection){
             die("Connection failed: ". mysqli_connect_error());
         }
-        
         return $connection;
     }
 }
