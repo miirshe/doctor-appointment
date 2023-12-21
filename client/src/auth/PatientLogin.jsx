@@ -34,7 +34,7 @@ const PatientLogin = () => {
                     </div>
                     <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-white hover:text-blue-600
                     transition-all ease-in-out" type="submit">Login Now</button>
-                    <p>Don't have an account <Link to='/patient-register' className="text-red-500">Login</Link></p>
+                    <p className="text-sm text-center mt-5">Don't have an account <Link to='/patient-register' className="text-red-500">Register</Link></p>
 
                 </Form>
             </Formik>

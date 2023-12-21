@@ -1,6 +1,11 @@
 import { Route, Routes } from "react-router-dom"
 import { Toaster } from 'react-hot-toast';
-import { About, Contact, DoctorLogin, DoctorRegister, Home, PageLayouts, PatientLogin, PatientRegister } from "./ExportFiles";
+import {
+  About, Contact, Dashboard,
+  DashboardLayout, DoctorLogin,
+  DoctorRegister, Home, PageLayouts,
+  PatientLogin, PatientRegister
+} from "./ExportFiles";
 const App = () => {
   return (
     <>
@@ -12,8 +17,13 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/doctor-login" element={<DoctorLogin />} />
           <Route path="/doctor-register" element={<DoctorRegister />} />
-          <Route path="/patient-login" element={<PatientLogin/>} />
-          <Route path="/patient-register" element={<PatientRegister/>} />
+          <Route path="/patient-login" element={<PatientLogin />} />
+          <Route path="/patient-register" element={<PatientRegister />} />
+        </Route>
+
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
       <Toaster />

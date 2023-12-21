@@ -1,10 +1,19 @@
 import { ErrorMessage, Field, Formik, Form } from "formik"
 import { useEffect, useRef, useState } from "react"
 import { IoIosArrowForward } from "react-icons/io"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as Yup from 'yup'
 import { IoCloudUploadOutline } from 'react-icons/io5';
+import { useGetHospitalsQuery } from "../redux/slices/HospitalSlices"
+import { useRegisterDoctorMutation } from "../redux/slices/DoctorSlices"
+import toast from "react-hot-toast"
 const DoctorRegister = () => {
+    const navigate = useNavigate();
+    const [registerDoctor] = useRegisterDoctorMutation();
+    const { data: hospitals = [] } = useGetHospitalsQuery();
+    console.log('hospitals', hospitals);
+    const getHospitalNames = hospitals?.data || [];
+    console.log(getHospitalNames);
     const initialRegister = {
         name: '',
         email: '',
@@ -12,7 +21,6 @@ const DoctorRegister = () => {
         address: '',
         password: '',
         description: '',
-        hos_id: '',
         hos_name: ''
     }
     const validationSchema = Yup.object({
@@ -60,7 +68,23 @@ const DoctorRegister = () => {
     };
 
     const handleSubmit = (values) => {
-        console.log(values);
+        const image = images;
+        const { name, email, password, address, phone, description, hos_name } = values;
+        registerDoctor({
+            name: name, email: email, password: password, address: address, phone: phone,
+            description: description, hos_id: hos_name, image: image
+        }).then((res) => {
+            const status = res?.data?.status;
+            const message = res?.data?.data;
+            if (status) {
+                toast.success(message);
+                navigate('/dashboard')
+            } else {
+                toast.error(message);
+            }
+        }).catch((err) => {
+            console.log(err?.message);
+        });
     }
     return (
         <div className="w-full md:w-[95%] lg:w-[90%] mx-auto p-4 mt-20">
@@ -110,6 +134,13 @@ const DoctorRegister = () => {
                     <div className="w-full space-y-3">
                         <Field as="select" rows="4" className="w-full px-3 py-2 rounded border border-slate-400 outline-blue-600" name='hos_name'>
                             <option value="">-select hospital name--</option>
+                            {
+                                getHospitalNames?.map(hospitals => {
+                                    return (
+                                        <option value={hospitals?.id} key={hospitals?.id}>{hospitals?.name}</option>
+                                    )
+                                })
+                            }
                         </Field>
                         <ErrorMessage name="hos_name" component="div" className="text-red-500" />
                     </div>

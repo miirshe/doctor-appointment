@@ -1,10 +1,14 @@
 import { ErrorMessage, Field, Formik, Form } from "formik"
 import { useEffect, useRef, useState } from "react"
 import { IoIosArrowForward } from "react-icons/io"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as Yup from 'yup'
 import { IoCloudUploadOutline } from 'react-icons/io5';
+import { useRegisterPatientMutation } from "../redux/slices/PatientSlices"
+import toast, {} from 'react-hot-toast';
 const PatientRegister = () => {
+    const navigate = useNavigate();
+    const [registerPatient] = useRegisterPatientMutation()
     const initialRegister = {
         name: '',
         email: '',
@@ -55,7 +59,21 @@ const PatientRegister = () => {
     };
 
     const handleSubmit = (values) => {
-        console.log(values);
+        const {name , email , phone , address,password} = values;
+        const image = images;
+        registerPatient({name, email, phone, address, password,image})
+        .then((res) => {
+            const status = res.data.status;
+            if(status){
+                toast.success(res?.data?.data);
+                navigate('/dashboard')
+            }else{
+                toast.error(res?.data?.data);
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+
     }
     return (
         <div className="w-full md:w-[95%] lg:w-[90%] mx-auto p-4 mt-20">
