@@ -72,7 +72,7 @@ const DoctorRegister = () => {
         const { name, email, password, address, phone, description, hos_name } = values;
         registerDoctor({
             name: name, email: email, password: password, address: address, phone: phone,
-            description: description, hos_id: hos_name, image: image
+            description: description, hos_id: hos_name, image: image , status: 'unverified'
         }).then((res) => {
             const status = res?.data?.status;
             const message = res?.data?.data;

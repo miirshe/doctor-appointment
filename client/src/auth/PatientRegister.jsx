@@ -66,7 +66,7 @@ const PatientRegister = () => {
             const status = res.data.status;
             if(status){
                 toast.success(res?.data?.data);
-                navigate('/dashboard')
+                navigate('/')
             }else{
                 toast.error(res?.data?.data);
             }
