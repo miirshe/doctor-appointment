@@ -1,4 +1,4 @@
-import { MdClose, MdOutlineLogout, MdOutlineMonitorHeart } from "react-icons/md"
+import { MdClose, MdOutlineCategory, MdOutlineLogout, MdOutlineMonitorHeart } from "react-icons/md"
 import { LuLayoutDashboard } from "react-icons/lu";
 import { LiaHospital } from "react-icons/lia";
 import { Link } from "react-router-dom";
@@ -45,6 +45,10 @@ const DashboardSideBar = ({ showMenu, setShowMenu }) => {
                         <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
                             <LiaDiagnosesSolid size={20} />
                             <span>Diagnoses</span>
+                        </Link>
+                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard/specialities'>
+                            <MdOutlineCategory size={20} />
+                            <span>Specialities</span>
                         </Link>
                         <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
                             <PiUsersFourThin size={20} />

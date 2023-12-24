@@ -4,7 +4,7 @@ import {
   About, AddDoctor, AddHospital, AddPatients, Contact, Dashboard,
   DashboardLayout, DoctorLogin,
   DoctorRegister, Doctors, Home, HospitalList, PageLayouts,
-  PatientLogin, PatientRegister, Patients
+  PatientLogin, PatientRegister, Patients, Specialities
 } from "./ExportFiles";
 const App = () => {
   return (
@@ -33,6 +33,8 @@ const App = () => {
           <Route path="patients" element={<Patients />} />
           <Route path="add-patient" element={<AddPatients />} />
           <Route path="add-patient/:id" element={<AddPatients />} />
+          <Route path="specialities" element={<Specialities/>} />
+          <Route path="specialities/:id" element={<Specialities/>} />
         </Route>
       </Routes>
       <Toaster />

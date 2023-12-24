@@ -8,6 +8,7 @@ import { DoctorScheduleSlices } from './slices/DoctorScheduleSlices';
 import { DoctorProfession } from './slices/DoctorProfession';
 import { AppointmentSlices } from './slices/AppointmentSlices';
 import { DiagnosesSlices } from './slices/DiagnosesSlices';
+import { SpecialitiesSlices } from './slices/SpecialitiesSlices';
 export const store = configureStore({
     reducer: {
         [UserSlices.reducerPath]: UserSlices.reducer,
@@ -18,12 +19,13 @@ export const store = configureStore({
         [DoctorProfession.reducerPath]: DoctorProfession.reducer,
         [AppointmentSlices.reducerPath]: AppointmentSlices.reducer,
         [DiagnosesSlices.reducerPath]: DiagnosesSlices.reducer,
+        [SpecialitiesSlices.reducerPath]: SpecialitiesSlices.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(UserSlices.middleware)
             .concat(PatientSlices.middleware).concat(DoctorSlices.middleware)
             .concat(HospitalSlices.middleware).concat(DoctorScheduleSlices.middleware)
             .concat(DoctorProfession.middleware).concat(AppointmentSlices.middleware)
-            .concat(DiagnosesSlices.middleware)
+            .concat(DiagnosesSlices.middleware).concat(SpecialitiesSlices.middleware)
 })
 setupListeners(store.dispatch);
