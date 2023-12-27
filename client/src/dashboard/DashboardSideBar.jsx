@@ -1,4 +1,4 @@
-import { MdClose, MdOutlineCategory, MdOutlineLogout, MdOutlineMonitorHeart } from "react-icons/md"
+import { MdClose, MdOutlineCategory, MdOutlineMonitorHeart, MdSchedule } from "react-icons/md"
 import { LuLayoutDashboard } from "react-icons/lu";
 import { LiaHospital } from "react-icons/lia";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const DashboardSideBar = ({ showMenu, setShowMenu }) => {
                     <MdClose className="block lg:hidden" size={30} onClick={() => setShowMenu(!showMenu)} />
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-3">
                     <h1 className="p-2 font-light tracking-widest">Main</h1>
                     <div className="w-full mt-5 space-y-2 text-base font-medium">
                         <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
@@ -42,7 +42,7 @@ const DashboardSideBar = ({ showMenu, setShowMenu }) => {
                             <GrSchedules size={20} />
                             <span>Appointments</span>
                         </Link>
-                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
+                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard/diagnoses'>
                             <LiaDiagnosesSolid size={20} />
                             <span>Diagnoses</span>
                         </Link>
@@ -50,14 +50,13 @@ const DashboardSideBar = ({ showMenu, setShowMenu }) => {
                             <MdOutlineCategory size={20} />
                             <span>Specialities</span>
                         </Link>
-                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
+                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard/users'>
                             <PiUsersFourThin size={20} />
                             <span>Users</span>
                         </Link>
-                        <hr className="w-full" />
-                        <Link className="w-full bg-blue-600 text-white rounded hover:text-blue-600 hover:bg-white transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard'>
-                            <MdOutlineLogout className="ml-2" size={20} />
-                            <span>Logout</span>
+                        <Link className="w-full hover:text-blue-600 transition-all ease-in-out flex flex-row justify-start items-center gap-3 p-2" to='/dashboard/doctor-schedule'>
+                            <MdSchedule size={20} />
+                            <span>Doctor Schedule</span>
                         </Link>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import { CiSettings } from "react-icons/ci";
 import { MdClose, MdOutlineMenu } from "react-icons/md";
 const DashboardHeader = ({ showMenu, setShowMenu }) => {
   return (
-    <div className="p-3 shadow bg-white">
+    <div className="p-3 bg-white shadow">
       <div className="flex flex-row justify-start md:justify-end items-center gap-2 md:gap-4">
         {
           showMenu ?

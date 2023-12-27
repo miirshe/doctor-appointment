@@ -1,49 +1,11 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
+import { useGetDoctorsQuery, useGetDoctorsWithScheduleQuery } from "../redux/slices/DoctorSlices";
+import { MdVerified } from "react-icons/md";
 const DoctorsSlider = () => {
-  const DoctorData = [
-    {
-      'id': 1,
-      'fname': 'John',
-      'lname': 'Smith',
-      'speciality': 'Nuerology',
-      'experience': '5yr',
-      'image': '/images/dr4.png'
-    },
-    {
-      'id': 2,
-      'fname': 'Joe',
-      'lname': 'Robot',
-      'speciality': 'Nuerology',
-      'experience': '5yr',
-      'image': '/images/dr4.png'
-    },
-    {
-      'id': 3,
-      'fname': 'abdikafi',
-      'lname': 'isse',
-      'speciality': 'Nuerology',
-      'experience': '5yr',
-      'image': '/images/dr4.png'
-    },
-    {
-      'id': 4,
-      'fname': 'Navana Tailor',
-      'lname': 'isse',
-      'speciality': 'Nuerology',
-      'experience': '5yr',
-      'image': '/images/dr3.png'
-    },
-    {
-      'id': 5,
-      'fname': 'Navana Tailor',
-      'lname': 'isse',
-      'speciality': 'Nuerology',
-      'experience': '5yr',
-      'image': '/images/dr3.png'
-    }
-  ]
+  const { data } = useGetDoctorsQuery();
+  const DoctorData = data?.data || [];
 
   const responsive = {
     superLargeDesktop: {
@@ -68,17 +30,29 @@ const DoctorsSlider = () => {
     <div className="w-full mt-20">
       <h1 className="w-full text-center text-xl font-semibold">Meet With Doctor</h1>
       <div className="w-full mt-10">
-        <Carousel responsive={responsive}>
+        <Carousel responsive={responsive} className="bg-white">
           {
-            DoctorData?.map(res => {
+            DoctorData?.map(doctor => {
               return (
-                <Link to={`doctor-detail/${res.id}`} className="w-full relative" key={res.id}>
-                  <img src={res.image} className="w-40 h-40 md:w-60 md:h-60 object-center bg-cover" alt="" />
-                  <div className="w-40 h-20 md:w-60 md:h-40 absolute top-20 rounded-md p-4 bg-blue-600 -z-10">
-                  </div>
-                  <div className="mt-2 space-y-2">
-                    <p className="text-lg font-normal">Dr. <span>{res?.fname}</span> <span>{res?.lname}</span></p>
-                    <p className="text-base font-light"> <span>{res?.speciality}</span> ( <span>{res?.experience} experience</span>)</p>
+                <Link to={`doctor-detail/${doctor?.id}`} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out  hover:shadow-md" key={doctor.id}>
+                  <img className="w-28 h-28 mx-auto rounded-full object-center bg-cover" src={doctor?.image} alt="" />
+                  <div className="w-full space-y-3">
+                    <hr className="w-full mt-2" />
+                    <p className="w-full font-medium text-base text-center">Dr.{`${doctor?.fname} ${doctor?.lname}`}</p>
+                    <p className="w-full font-light text-sm text-center">{doctor?.address}</p>
+                    <p className="w-full font-light text-sm text-center">exp. {doctor?.experience}</p>
+                    <p className="w-fit mx-auto font-light text-sm text-center bg-green-500 text-white p-2 rounded">{doctor?.speciality}</p>
+                    <hr className="w-full mt-4" />
+
+                    <div className="w-full grid grid-cols-2 p-2 justify-start items-center mt-2">
+                      <div className="w-full">
+                        <p className={`${doctor?.status == 'verified' ? 'text-green-500 w-full font-light text-sm text-center ' : 'text-red-500 w-full font-light text-sm text-center'}`}><MdVerified className="inline" /> {doctor?.status}</p>
+                      </div>
+                      <div className="w-full">
+                        <button className="w-full font-light text-sm text-center">Book Now</button>
+                      </div>
+                    </div>
+
                   </div>
                 </Link>
               )
@@ -86,7 +60,7 @@ const DoctorsSlider = () => {
           }
         </Carousel>
       </div>
-    </div>
+    </div >
   )
 }
 

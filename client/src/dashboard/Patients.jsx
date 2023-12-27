@@ -58,7 +58,7 @@ const Patients = () => {
         },
     ];
     return (
-        <div className="w-full lg:w-[85%] p-2 mt-10 mx-auto">
+        <div className="w-full lg:w-[85%] mt-10 mx-auto p-3 bg-white">
             <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
                 <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
                     <Link to='/'> <span className="text-blue-600">Home</span> / </Link>

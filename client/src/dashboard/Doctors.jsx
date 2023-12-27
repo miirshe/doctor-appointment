@@ -6,11 +6,11 @@ import { useDeleteDoctorMutation, useGetDoctorsQuery } from "../redux/slices/Doc
 import { useState } from "react";
 const Doctors = () => {
   const [deleteDoctor] = useDeleteDoctorMutation();
-  const [ searchText , setSearchText] = useState('');
+  const [searchText, setSearchText] = useState('');
   const { data } = useGetDoctorsQuery();
   const doctors = data?.data || [];
   const filteringData = doctors?.filter(res => {
-    return res.name.toLowerCase().includes(searchText.toLowerCase()); 
+    return res.fname.toLowerCase().concat(res.lname.toLowerCase()).includes(searchText.toLowerCase());
   })
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete')) {
@@ -29,8 +29,11 @@ const Doctors = () => {
   }
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'name', headerName: 'Name', width: 130 },
+    { field: 'fname', headerName: 'First Name', width: 130 },
+    { field: 'lname', headerName: 'Last Name', width: 130 },
     { field: 'email', headerName: 'Email', width: 130 },
+    { field: 'gender', headerName: 'Gender', width: 130 },
+    { field: 'experience', headerName: 'Experience', width: 130 },
     { field: 'phone', headerName: 'Phone', width: 100 },
     { field: 'address', headerName: 'Address', width: 130 },
     {
@@ -49,6 +52,7 @@ const Doctors = () => {
         </span>
       )
     },
+    { field: 'hos_id', headerName: 'HOS_ID', width: 100 },
     { field: 'created_at', headerName: 'createdAt', width: 100 },
     {
       field: 'action', headerName: 'Actions', width: 150,
@@ -67,7 +71,7 @@ const Doctors = () => {
     },
   ];
   return (
-    <div className="w-full lg:w-[85%] p-2 mt-10 mx-auto">
+    <div className="w-full lg:w-[85%] p-3  bg-white mt-10 mx-auto">
       <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
         <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
           <Link to='/'> <span className="text-blue-600">Home</span> / </Link>
@@ -78,7 +82,7 @@ const Doctors = () => {
       </div>
       <div className="w-full md:w-[50%] mt-4">
         <input type="text" className="w-full px-3 py-2 rounded border outline-blue-600" placeholder="search doctor name ..."
-        onChange={(e) => setSearchText(e.target.value)}/>
+          onChange={(e) => setSearchText(e.target.value)} />
       </div>
       <div style={{ height: 400, width: '100%' }} className="mt-10">
         <DataGrid

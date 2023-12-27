@@ -2,66 +2,77 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../BASE_URL";
 
 export const DoctorSlices = createApi({
-    reducerPath : 'DoctorSlices',
-    baseQuery : fetchBaseQuery({
-        baseUrl : BASE_URL
+    reducerPath: 'DoctorSlices',
+    baseQuery: fetchBaseQuery({
+        baseUrl: BASE_URL
     }),
-    tagTypes : ['doctor'],
-    endpoints : (builder) => ({
+    tagTypes: ['doctor'],
+    endpoints: (builder) => ({
 
-        registerDoctor : builder.mutation({
-            query : (newDoctor) => ({
-                url : 'createDoctor',
-                method : 'POST',
-                body : newDoctor
-            }),
-            invalidatesTags : ['doctor']
+        registerDoctor: builder.mutation({
+            query: (newDoctor) => (
+                console.log(newDoctor), {
+                    url: 'createDoctor',
+                    method: 'POST',
+                    body: newDoctor
+                }),
+            invalidatesTags: ['doctor']
         }),
 
-        loginDoctor : builder.mutation({
-            query : (loginDoctor) => ({
-                url : '',
-                method : 'POST',
-                body : loginDoctor
+        loginDoctor: builder.mutation({
+            query: (loginDoctor) => ({
+                url: '',
+                method: 'POST',
+                body: loginDoctor
             }),
-            invalidatesTags : ['doctor']
+            invalidatesTags: ['doctor']
         }),
 
-        updateDoctor : builder.mutation({
-            query : ({id , updateDoctor}) => ({
-                url : `updateDoctor/${id}`,
-                method : 'POST',
-                body : updateDoctor
+        updateDoctor: builder.mutation({
+            query: ({ id, updateDoctor }) => ({
+                url: `updateDoctor/${id}`,
+                method: 'POST',
+                body: updateDoctor
             }),
-            invalidatesTags : ['doctor']
+            invalidatesTags: ['doctor']
         }),
 
-        deleteDoctor : builder.mutation({
-            query : (id) => ({
-                url : `deleteDoctor/${id}`,
-                method : 'POST',
+        deleteDoctor: builder.mutation({
+            query: (id) => ({
+                url: `deleteDoctor/${id}`,
+                method: 'POST',
             }),
-            invalidatesTags : ['doctor']
+            invalidatesTags: ['doctor']
         }),
 
-        getDoctors : builder.query({
-            query : () => {
+        getDoctors: builder.query({
+            query: () => {
                 return {
-                    url : 'getDoctors',
-                    method : 'GET',
+                    url: 'getDoctors',
+                    method: 'GET',
                 }
             },
-            providesTags : ['doctor']
+            providesTags: ['doctor']
         }),
 
-        getDoctor : builder.query({
-            query : () => {
+        getDoctorsWithSchedule: builder.query({
+            query: () => {
                 return {
-                    url : 'getDoctor',
-                    method : 'GET',
+                    url: 'getDoctorsWithSchedule',
+                    method: 'GET',
                 }
             },
-            providesTags : ['doctor']
+            providesTags: ['doctor']
+        }),
+
+        getDoctor: builder.query({
+            query: () => {
+                return {
+                    url: 'getDoctor',
+                    method: 'GET',
+                }
+            },
+            providesTags: ['doctor']
         })
 
     })
@@ -73,5 +84,6 @@ export const {
     useDeleteDoctorMutation,
     useUpdateDoctorMutation,
     useGetDoctorsQuery,
-    useGetDoctorQuery
+    useGetDoctorQuery,
+    useGetDoctorsWithScheduleQuery
 } = DoctorSlices

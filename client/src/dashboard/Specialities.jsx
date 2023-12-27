@@ -7,7 +7,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { useCreateSpecialityMutation, useDeleteSpecialitiesMutation, useGetSpecialitiesQuery, useUpdateSpecialitiesMutation } from '../redux/slices/SpecialitiesSlices';
 import toast from 'react-hot-toast';
+import { useGetDoctorsQuery } from '../redux/slices/DoctorSlices';
 const Specialities = () => {
+    const { data: doctors = [] } = useGetDoctorsQuery();
+    const DoctorsInfo = doctors?.data || [];
     const navigate = useNavigate();
     const params_row = useLocation().state;
     const [createSpeciality] = useCreateSpecialityMutation();
@@ -30,11 +33,13 @@ const Specialities = () => {
     };
 
     const initialValues = {
-        speciality: params_row?.speciality || ''
+        speciality: params_row?.speciality || '',
+        doc_name: ''
     }
 
     const validationSchema = Yup.object({
         speciality: Yup.string().required('specialities is required'),
+        doc_name: Yup.string().required('doctor name is required'),
     })
 
     const [images, setImages] = useState(null);
@@ -72,11 +77,12 @@ const Specialities = () => {
 
     const handleSubmit = async (values) => {
         const image = images;
-        const { speciality } = values
+        const { speciality, doc_name } = values
         if (!params_row?.id) {
             createSpeciality({
                 speciality: speciality,
-                image: image
+                doc_id: doc_name,
+                image: image || params_row?.image
             }).then((res) => {
                 const status = res?.data?.status;
                 const message = res?.data?.data;
@@ -93,7 +99,8 @@ const Specialities = () => {
                 id: params_row?.id,
                 updateSpecialities: {
                     speciality: speciality,
-                    image: image
+                    doc_id: doc_name,
+                    image: image || params_row?.image
                 }
             }).then((res) => {
                 const status = res?.data?.status;
@@ -129,6 +136,7 @@ const Specialities = () => {
     const columns = [
         { field: 'id', headerName: 'ID', width: 150 },
         { field: 'speciality', headerName: 'Speciality', width: 150 },
+        { field: 'doc_id', headerName: 'DOC_ID', width: 150 },
         {
             field: 'image', headerName: 'image', width: 150,
             renderCell: (params) => (
@@ -167,9 +175,36 @@ const Specialities = () => {
                             <Form className='w-full space-y-2 p-4'>
                                 <div className='w-full space-y-2'>
                                     <label htmlFor="" className="text-base font-medium ml-1">Speciality</label>
-                                    <Field className="p-3 rounded border w-full outline-blue-600" type="text" placeholder='Speciality Name' name="speciality" />
+                                    <Field className="p-3 rounded border w-full outline-blue-600" as="select" placeholder='Speciality Name' name="speciality">
+                                        <option value="">--select doctor specialities</option>
+                                        <option value="Cardiology">Cardiology</option>
+                                        <option value="Oncology">Oncology</option>
+                                        <option value="Neurology">Neurology</option>
+                                        <option value="Orthopedic Surgery">Orthopedic Surgery</option>
+                                        <option value="Gastroenterology">Gastroenterology</option>
+                                        <option value="Obstetrics and Gynecology">Obstetrics and Gynecology</option>
+                                        <option value="Pediatrics">Pediatrics</option>
+                                        <option value="Obstetrics">Obstetrics</option>
+                                        <option value="Psychiatry">Psychiatry</option>
+                                        <option value="Dermatology">Dermatology</option>
+                                    </Field>
                                     <ErrorMessage name='speciality' className='text-red-600' component="div" />
                                 </div>
+                                <div className="w-full space-y-3">
+                                    <label htmlFor="" className="text-base font-medium ml-1">Status</label>
+                                    <Field as="select" className="w-full px-3 py-2 rounded border outline-blue-600" name='doc_name'>
+                                        <option value="">---select doctor name---</option>
+                                        {
+                                            DoctorsInfo?.map(doctor => {
+                                                return (
+                                                    <option key={doctor?.id} value={doctor?.id}>{doctor?.fname + ' ' + doctor?.lname}</option>
+                                                )
+                                            })
+                                        }
+                                    </Field>
+                                    <ErrorMessage name="doc_name" component="div" className="text-red-500" />
+                                </div>
+
                                 <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-5'>
                                     <button className='w-full p-3 rounded shadow border border-blue-600 text-blue-600' onClick={handleClose}>Close</button>
                                     <button className='w-full p-3 rounded shadow bg-blue-600 text-white' type='submit'>{!params_row?.id ? 'Save Change' : 'Update Change'}</button>
@@ -182,7 +217,7 @@ const Specialities = () => {
         </div>
     )
     return (
-        <div className="w-full lg:w-[85%] p-2 mt-10 mx-auto">
+        <div className="w-full lg:w-[85%] p-3 mt-10 mx-auto bg-white">
             <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
                 <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
                     <Link to='/'> <span className="text-blue-600">Home</span> / </Link>

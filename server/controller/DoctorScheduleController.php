@@ -29,21 +29,23 @@ class DoctorScheduleController
         $id = $this->generateDoctorScheduleID($db);
         $requestData = json_decode(file_get_contents('php://input'));
         if (
-            !empty($requestData->date) && !empty($requestData->from_time)
-            && !empty($requestData->to_time) && !empty($requestData->status)
+            !empty($requestData->day) && !empty($requestData->from_time)
+            && !empty($requestData->to_time) && !empty($requestData->appointment_limit)  && !empty($requestData->status)
             && !empty($requestData->doc_id)
         ) {
             $date = $requestData->date;
-            $from_time = $requestData->from_time;
-            $to_time = $requestData->to_time;
+            $day = $requestData->day;
+            $from_time = trim($requestData->from_time);
+            $to_time = trim($requestData->to_time);
+            $appointment_limit = trim($requestData->appointment_limit);
             $status = $requestData->status;
             $doc_id = trim($requestData->doc_id);
-            $query = "INSERT INTO  doctor_schedules(`id`,`date`,`from_time`,`to_time`,`status`,`doc_id`) 
-            VALUES ('$id','$date','$from_time','$to_time','$status','$doc_id')";
+            $query = "INSERT INTO  doctor_schedules(`id`,`day`,`from_time`,`to_time`,`appointment_limit`,`status`,`doc_id`) 
+            VALUES ('$id','$day','$from_time','$to_time','$appointment_limit','$status','$doc_id')";
             $result = $db->query($query);
-            if($result){
+            if ($result) {
                 $message = ['status' => true, "data" => "successfully inserted"];
-            }else{
+            } else {
                 $message = ['status' => false, "data" => "failed to create doctor schedule"];
             }
         } else {
@@ -53,84 +55,88 @@ class DoctorScheduleController
         echo json_encode($message);
     }
 
-    public function getDoctorSchedules($db){
+    public function getDoctorSchedules($db)
+    {
         $message = [];
         $data  = [];
         $query = "SELECT * FROM doctor_schedules";
         $result = $db->query($query);
-        if($result){
-            while($row = $result->fetch_assoc()) {
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
                 $data[] = $row;
             }
             $message = ['status' => true, "data" => $data];
-        }else{
+        } else {
             $message = ['status' => false, "data" => "failed to get doctor schedules"];
         }
 
         echo json_encode($message);
     }
 
-    public function getDoctorSchedule($db,$params){
+    public function getDoctorSchedule($db, $params)
+    {
         $message = [];
         $data  = [];
-        if(!empty($params)){
+        if (!empty($params)) {
             $id = trim($params);
             $query = "SELECT * FROM doctor_schedules WHERE `id` = '$id'";
             $result = $db->query($query);
-            if($result){
-                while($row = $result->fetch_assoc()) {
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
                     $data[] = $row;
                 }
                 $message = ['status' => true, "data" => $data];
-            }else{
+            } else {
                 $message = ['status' => false, "data" => "failed to get doctor schedules"];
             }
-        }else{
+        } else {
             $message = ['status' => false, "data" => "missing params id"];
         }
 
         echo json_encode($message);
     }
 
-    public function deleteDoctorSchedule($db,$params){
+    public function deleteDoctorSchedule($db, $params)
+    {
         $message = [];
-        if(!empty($params)){
+        if (!empty($params)) {
             $id = trim($params);
             $query = "DELETE FROM doctor_schedules WHERE `id` = '$id'";
             $result = $db->query($query);
-            if($result){
+            if ($result) {
                 $message = ['status' => true, "data" => "successfully deleted"];
-            }else{
+            } else {
                 $message = ['status' => true, "data" => "failed to delete"];
             }
-        }else{
+        } else {
             $message = ['status' => false, "data" => "missing params id"];
         }
 
         echo json_encode($message);
     }
 
-    public function updateDoctorSchedule($db,$params)
+    public function updateDoctorSchedule($db, $params)
     {
         $message = [];
         $requestData = json_decode(file_get_contents('php://input'));
         if (
-            !empty($requestData->date) && !empty($requestData->from_time)
-            && !empty($requestData->to_time) && !empty($requestData->status)
+            !empty($requestData->day) && !empty($requestData->from_time)
+            && !empty($requestData->to_time) && !empty($requestData->appointment_limit)  && !empty($requestData->status)
             && !empty($requestData->doc_id)
         ) {
             $id = trim($params);
-            $date = $requestData->date;
-            $from_time = $requestData->from_time;
-            $to_time = $requestData->to_time;
+            $day = $requestData->day;
+            $from_time = trim($requestData->from_time);
+            $to_time = trim($requestData->to_time);
+            $appointment_limit = trim($requestData->appointment_limit);
             $status = $requestData->status;
             $doc_id = trim($requestData->doc_id);
-            $query = "UPDATE doctor_schedules SET `date` = '$date', `from_time` = '$from_time', 
-            `to_time` = '$to_time' , `status` = '$status',`doc_id` = '$doc_id' WHERE `id` = '$id'";
+            $query = "UPDATE doctor_schedules SET  `day` = '$day',`from_time` = '$from_time', 
+            `to_time` = '$to_time', `appointment_limit` = '$appointment_limit' , `status` = '$status',`doc_id` = '$doc_id' WHERE `id` = '$id'";
             $result = $db->query($query);
-            if($result){
+            if ($result) {
                 $message = ['status' => true, "data" => "successfully updated"];
-            }else{
+            } else {
                 $message = ['status' => false, "data" => "failed to create doctor schedule"];
             }
         } else {
@@ -139,6 +145,4 @@ class DoctorScheduleController
 
         echo json_encode($message);
     }
-
-
 }

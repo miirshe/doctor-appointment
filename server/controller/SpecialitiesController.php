@@ -1,13 +1,13 @@
 <?php
 header('Content-Type: application/json');
 
-class DiagnosesController
+class SpecialitiesController
 {
-    public function getenerateDiagnoeseID($db)
+    public function getenerateSpecialitiesID($db)
     {
         $id = '';
         $message = [];
-        $query = "SELECT * FROM diagnoses ORDER BY diagnoses.id DESC LIMIT 1";
+        $query = "SELECT * FROM Specialities ORDER BY id DESC LIMIT 1";
         $result = $db->query($query);
         if ($result) {
             $num_rows = $result->num_rows;
@@ -15,7 +15,7 @@ class DiagnosesController
                 $row = $result->fetch_assoc();
                 $id = ++$row['id'];
             } else {
-                $id = 'DIA001';
+                $id = 'SP001';
             }
         } else {
             $message = ["status" => false, "data" => "failed to generate id"];
@@ -23,15 +23,16 @@ class DiagnosesController
         return $id;
     }
 
-    public function createDiagnoses($db)
+    public function createSpecialities($db)
     {
         $message = [];
-        $id = $this->getenerateDiagnoeseID($db);
+        $id = $this->getenerateSpecialitiesID($db);
         $requestData = json_decode(file_get_contents('php://input'));
-        if (!empty($requestData->name) && !empty($requestData->description)) {
-            $name = trim($requestData->name);
-            $description = trim($requestData->description);
-            $query = "INSERT INTO diagnoses(`id`, `name`, `description`) VALUES ('$id','$name','$description')";
+        if (!empty($requestData->speciality) && !empty($requestData->doc_id) && !empty($requestData->image)) {
+            $speciality = trim($requestData->speciality);
+            $doc_id = $requestData->doc_id;
+            $image = trim($requestData->image);
+            $query = "INSERT INTO Specialities (`id`,`speciality`,`doc_id`,`image`) VALUES('$id','$speciality','$doc_id','$image')";
             $result = $db->query($query);
             if ($result) {
                 $message = ["status" => true, "data" => "successfully inserted"];
@@ -45,11 +46,11 @@ class DiagnosesController
         echo json_encode($message);
     }
 
-    public function getDiagnoses($db)
+    public function getSpecialities($db)
     {
         $message = [];
         $data = [];
-        $query = "SELECT * FROM diagnoses";
+        $query = "SELECT * FROM Specialities";
         $result = $db->query($query);
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -63,13 +64,13 @@ class DiagnosesController
         echo json_encode($message);
     }
 
-    public function getDiagnose($db, $params)
+    public function getSpeciality($db, $params)
     {
         $message = [];
         $data = [];
         if (!empty($params)) {
             $id = trim($params);
-            $query = "SELECT * FROM diagnoses WHERE `id` = '$id'";
+            $query = "SELECT * FROM Specialities WHERE `id` = '$id'";
             $result = $db->query($query);
             if ($result) {
                 while ($row = $result->fetch_assoc()) {
@@ -86,12 +87,12 @@ class DiagnosesController
         echo json_encode($message);
     }
 
-    public function deleteDiagnose($db, $params)
+    public function deleteSpecialities($db, $params)
     {
         $message = [];
         if (!empty($params)) {
             $id = trim($params);
-            $query = "DELETE FROM diagnoses WHERE `id` = '$id'";
+            $query = "DELETE FROM Specialities WHERE `id` = '$id'";
             $result = $db->query($query);
             if ($result) {
                 $message = ["status" => true, "data" => 'successfully deleted'];
@@ -105,15 +106,16 @@ class DiagnosesController
         echo json_encode($message);
     }
 
-    public function updateDiagnose($db, $params)
+    public function updateSpecialities($db, $params)
     {
         $message = [];
         $requestData = json_decode(file_get_contents('php://input'));
-        if (!empty($requestData->name) && !empty($requestData->description) && !empty($params)) {
+        if (!empty($requestData->speciality)  && !empty($requestData->doc_id) && !empty($requestData->image) && !empty($params)) {
             $id = trim($params);
-            $name = trim($requestData->name);
-            $description = trim($requestData->description);
-            $query = "UPDATE diagnoses SET `name` = '$name', `description` = '$description' WHERE `id` = '$id'";
+            $speciality = trim($requestData->speciality);
+            $doc_id = $requestData->doc_id;
+            $image = trim($requestData->image);
+            $query = "UPDATE Specialities SET `speciality` = '$speciality', `doc_id` = '$doc_id', `image` = '$image' WHERE `id` = '$id'";
             $result = $db->query($query);
             if ($result) {
                 $message = ["status" => true, "data" => "successfully updated"];

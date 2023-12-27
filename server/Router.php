@@ -11,6 +11,7 @@ include './controller/ProfessionController.php';
 include './controller/DiagnosesController.php';
 include './controller/DoctorScheduleController.php';
 include './controller/AppointmentController.php';
+include './controller/SpecialitiesController.php';
 include './model/Database.php';
 $connection = new Database();
 $db = $connection->db();
@@ -33,6 +34,7 @@ $routes = [
     "/doctor-appointment/server/deleteHospital/(\w+)" => "HospitalController@deleteHospital",
     "/doctor-appointment/server/createDoctor" => "DoctorController@createDoctor",
     "/doctor-appointment/server/getDoctors" => "DoctorController@getDoctors",
+    "/doctor-appointment/server/getDoctorsWithSchedule" => "DoctorController@getDoctorsWithSchedule",
     "/doctor-appointment/server/getDoctor/(\w+)" => "DoctorController@getDoctor",
     "/doctor-appointment/server/updateDoctor/(\w+)" => "DoctorController@updateDoctor",
     "/doctor-appointment/server/deleteDoctor/(\w+)" => "DoctorController@deleteDoctor",
@@ -56,18 +58,22 @@ $routes = [
     "/doctor-appointment/server/getAppointment/(\w+)" => "AppointmentController@getAppointment",
     "/doctor-appointment/server/deleteAppointment/(\w+)" => "AppointmentController@deleteAppointment",
     "/doctor-appointment/server/updateAppointment/(\w+)" => "AppointmentController@updateAppointment",
+    "/doctor-appointment/server/createSpecialities" => "SpecialitiesController@createSpecialities",
+    "/doctor-appointment/server/getSpecialities" => "SpecialitiesController@getSpecialities",
+    "/doctor-appointment/server/updateSpecialities/(\w+)" => "SpecialitiesController@updateSpecialities",
+    "/doctor-appointment/server/deleteSpecialities/(\w+)" => "SpecialitiesController@deleteSpecialities",
 ];
 
-foreach($routes as $key => $value){
+foreach ($routes as $key => $value) {
     $pattern = "~^" . str_replace("/", "\\/", $key) . "$~";
-    if(preg_match($pattern, $url, $matches)){
-        $dividedRoutes = explode("@",$value);
+    if (preg_match($pattern, $url, $matches)) {
+        $dividedRoutes = explode("@", $value);
         $controllerName = $dividedRoutes[0];
         $methodName = $dividedRoutes[1];
         $controller = new $controllerName();
-        if(isset($matches[1])){
-            $controller->$methodName($db,$matches[1]);
-        }else{
+        if (isset($matches[1])) {
+            $controller->$methodName($db, $matches[1]);
+        } else {
             $controller->$methodName($db);
         }
         exit();

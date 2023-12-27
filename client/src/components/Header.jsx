@@ -35,7 +35,7 @@ const Header = () => {
         </div>
     )
     return (
-        <div className={`w-full fixed left-0 top-0 right-0 z-20 p-4 bg-[#ffffff] ${scrolling && 'shadow bg-[#ffffff]'}`}>
+        <div className={`w-full fixed left-0 top-0 right-0 z-20 p-4 bg-[#F2F4F6]${scrolling && 'shadow bg-white transition-all ease-in-out'}`}>
             <div className="w-full md:w-[95%] lg:w-[90%] mx-auto p-1 relative">
                 <div className="w-full flex flex-col lg:flex-row justify-between items-center gap-5">
                     <div className="w-full lg:w-[30%]">
@@ -51,7 +51,7 @@ const Header = () => {
                     <div className={`w-full lg:w-[70%] text-base font-light flex flex-col lg:flex-row justify-start items-start lg:justify-end lg:items-center gap-8
                     ${showMenu ? 'hidden lg:flex lg:flex-row' : 'block h-screen mt-10 lg:h-fit lg:mt-0'}`} onClick={() => setShowMenu(!showMenu)}>
                         <Link to='/' className="hover:text-blue-600 transition-all ease-in-out">Home</Link>
-                        <Link to='/doctors' className="hover:text-blue-600 transition-all ease-in-out">Doctors</Link>
+                        <Link to='/doctors-page' className="hover:text-blue-600 transition-all ease-in-out">Doctors</Link>
                         <Link to='/about' className="hover:text-blue-600 transition-all ease-in-out">About us</Link>
                         <Link to='/contact' className="hover:text-blue-600 transition-all ease-in-out">Contact us</Link>
                         <div className="w-[20%] hidden lg:block">

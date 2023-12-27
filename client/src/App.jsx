@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom"
 import { Toaster } from 'react-hot-toast';
 import {
-  About, AddDoctor, AddHospital, AddPatients, Contact, Dashboard,
-  DashboardLayout, DoctorLogin,
-  DoctorRegister, Doctors, Home, HospitalList, PageLayouts,
-  PatientLogin, PatientRegister, Patients, Specialities
+  About, AddDoctor, AddDoctorSchedule, AddHospital, AddPatients, AddUser, Contact, Dashboard,
+  DashboardLayout, Diagnoses, DoctorLogin,
+  DoctorRegister, DoctorSchedule, Doctors, DoctorsPage, Home, HospitalList, PageLayouts,
+  PatientLogin, PatientRegister, Patients, Specialities, Users
 } from "./ExportFiles";
 const App = () => {
   return (
@@ -13,6 +13,7 @@ const App = () => {
         <Route path="/" element={<PageLayouts />}>
           <Route index element={<Home />} />
           <Route path="/" element={<Home />} />
+          <Route path="/doctors-page" element={<DoctorsPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/doctor-login" element={<DoctorLogin />} />
@@ -33,8 +34,15 @@ const App = () => {
           <Route path="patients" element={<Patients />} />
           <Route path="add-patient" element={<AddPatients />} />
           <Route path="add-patient/:id" element={<AddPatients />} />
-          <Route path="specialities" element={<Specialities/>} />
-          <Route path="specialities/:id" element={<Specialities/>} />
+          <Route path="specialities" element={<Specialities />} />
+          <Route path="specialities/:id" element={<Specialities />} />
+          <Route path="users" element={<Users />} />
+          <Route path="add-user" element={<AddUser />} />
+          <Route path="diagnoses" element={<Diagnoses />} />
+          <Route path="diagnoses/:id" element={<Diagnoses />} />
+          <Route path="doctor-schedule" element={<DoctorSchedule />} />
+          <Route path="add-doctor-schedule" element={<AddDoctorSchedule />} />
+          <Route path="add-doctor-schedule/:id" element={<AddDoctorSchedule />} />
         </Route>
       </Routes>
       <Toaster />

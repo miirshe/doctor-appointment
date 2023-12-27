@@ -37,7 +37,7 @@ const WhyYouChooseUs = () => {
                 </div>
             </div>
             <div className="w-full">
-                <img src="/images/stethoscope.jpg" alt="" />
+                <img src="/images/stethoscope.png" alt="" />
             </div>
         </div>
     )

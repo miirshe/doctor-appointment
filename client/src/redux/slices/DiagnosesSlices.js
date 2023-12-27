@@ -10,11 +10,12 @@ export const DiagnosesSlices = createApi({
     endpoints: (builder) => ({
 
         createDiagnoses: builder.mutation({
-            query: (newDiagnoses) => ({
-                url: 'createDiagnoses',
-                method: 'POST',
-                body: newDiagnoses
-            }),
+            query: (newDiagnoses) => (
+                console.log(newDiagnoses), {
+                    url: 'createDiagnoses',
+                    method: 'POST',
+                    body: newDiagnoses
+                }),
             invalidatesTags: ['diagnoses']
         }),
 
