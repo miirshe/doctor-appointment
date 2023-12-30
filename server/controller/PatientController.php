@@ -7,7 +7,7 @@ class PatientController
     {
         $id = '';
         $data = [];
-        $query = "select * from patients order by patients.id desc limit 1";
+        $query = "SELECT * FROM patients ORDER BY patients.id DESC limit 1";
         $result = $db->query($query);
         if ($result) {
             $num_rows = $result->num_rows;
@@ -45,22 +45,24 @@ class PatientController
 
     public function registerPatient($db)
     {
-        $requestData = json_decode(file_get_contents('php://input'));
+        $requestData = isset($_POST['name']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         $id = $this->generatePatientIdentity($db);
         $message = [];
-        if (!empty($requestData->name) && !empty($requestData->email) && 
-        !empty($requestData->phone) && !empty($requestData->address) && 
-        !empty($requestData->image) && !empty($requestData->password)) {
-            $name = trim($requestData->name);
-            $email = trim($requestData->email);
-            $phone = trim($requestData->phone);
-            $address = trim($requestData->address);
-            $image = $requestData->image;
-            $hashed_password = md5($requestData->password);
 
-            $query = "INSERT INTO patients (`id`,`name`, `email`, `phone`,`address`,`image`,`password`) 
-            VALUES ('$id','$name','$email','$phone','$address','$image','$hashed_password')";
+        if (
+            !empty($requestData['name']) && !empty($requestData['email']) &&
+            !empty($requestData['phone']) && !empty($requestData['address']) &&
+            !empty($requestData['image']) && !empty($requestData['password'])
+        ) {
+            $name = trim($requestData['name']);
+            $email = trim($requestData['email']);
+            $phone = trim($requestData['phone']);
+            $address = trim($requestData['address']);
+            $image = $requestData['image'];
+            $hashed_password = md5($requestData['password']);
 
+            $query = "INSERT INTO patients (`id`, `name`, `email`, `phone`, `address`, `image`, `password`) 
+                      VALUES ('$id', '$name', '$email', '$phone', '$address', '$image', '$hashed_password')";
             $result = $db->query($query);
 
             if ($result) {
@@ -76,14 +78,16 @@ class PatientController
     }
 
 
-    public function updatePatient($db,$params)
+    public function updatePatient($db, $params)
     {
         $id = $params;
         $requestData = json_decode(file_get_contents('php://input'));
         $message = [];
-        if (!empty($requestData->name) && !empty($requestData->email) && 
-        !empty($requestData->phone) && !empty($requestData->address) && 
-        !empty($requestData->image)) {
+        if (
+            !empty($requestData->name) && !empty($requestData->email) &&
+            !empty($requestData->phone) && !empty($requestData->address) &&
+            !empty($requestData->image)
+        ) {
             $name = trim($requestData->name);
             $email = trim($requestData->email);
             $phone = trim($requestData->phone);
@@ -106,7 +110,7 @@ class PatientController
     }
 
 
-    public function deletePatient($db,$params)
+    public function deletePatient($db, $params)
     {
         $message = [];
         if (!empty($params)) {
@@ -127,7 +131,7 @@ class PatientController
     }
 
 
-    public function getPatient($db,$params)
+    public function getPatient($db, $params)
     {
         if (!empty($params)) {
             $id = $params;
@@ -145,6 +149,35 @@ class PatientController
             }
         } else {
             $message = ["status" => false, "data" => 'params is missing'];
+        }
+
+        echo json_encode($message);
+    }
+
+
+    public function loginPatient($db)
+    {
+        session_start();
+        $message = [];
+        $requestData = isset($_POST['name']) ? $_POST : json_decode(file_get_contents('php://input'), true);
+        if (!empty($requestData['email']) && !empty($requestData['password'])) {
+            $email = mysqli_real_escape_string($db,$requestData['email']);
+            $password = mysqli_real_escape_string($db,$requestData['password']);
+            $query = "CALL login_patient(?, ?)";
+            $stmt = $db->prepare($query);
+            $stmt->bind_param('ss',$email , $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result-> num_rows > 0) {
+                $sessionToken = bin2hex(random_bytes(16));
+                $_SESSION['session_token'] = $sessionToken;
+                $user = $result->fetch_assoc();
+                $message = ['status' => true, 'data' => 'Login successful', 'session_token' => $sessionToken,"user" => $user,"userType" => "patient"];
+            } else {
+                $message = ['status' => false, 'data' => 'Invalid email or password'];
+            }
+        } else {
+            $message = ['status' => false, 'data' => 'Required missing values'];
         }
 
         echo json_encode($message);
