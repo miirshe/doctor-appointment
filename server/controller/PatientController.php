@@ -158,8 +158,8 @@ class PatientController
     public function loginPatient($db)
     {
         session_start();
+        $requestData = isset($_POST['email']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         $message = [];
-        $requestData = isset($_POST['name']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         if (!empty($requestData['email']) && !empty($requestData['password'])) {
             $email = mysqli_real_escape_string($db,$requestData['email']);
             $password = mysqli_real_escape_string($db,$requestData['password']);
