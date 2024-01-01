@@ -161,20 +161,51 @@ class PatientController
         $requestData = isset($_POST['email']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         $message = [];
         if (!empty($requestData['email']) && !empty($requestData['password'])) {
-            $email = mysqli_real_escape_string($db,$requestData['email']);
-            $password = mysqli_real_escape_string($db,$requestData['password']);
+            $email = mysqli_real_escape_string($db, $requestData['email']);
+            $password = mysqli_real_escape_string($db, $requestData['password']);
             $query = "CALL login_patient(?, ?)";
             $stmt = $db->prepare($query);
-            $stmt->bind_param('ss',$email , $password);
+            $stmt->bind_param('ss', $email, $password);
             $stmt->execute();
             $result = $stmt->get_result();
-            if ($result-> num_rows > 0) {
+            if ($result->num_rows > 0) {
                 $sessionToken = bin2hex(random_bytes(16));
                 $_SESSION['session_token'] = $sessionToken;
                 $user = $result->fetch_assoc();
-                $message = ['status' => true, 'data' => 'Login successful', 'session_token' => $sessionToken,"user" => $user,"userType" => "patient"];
+                $message = ['status' => true, 'data' => 'Login successful', 'session_token' => $sessionToken, "user" => $user, "userType" => "patient"];
             } else {
                 $message = ['status' => false, 'data' => 'Invalid email or password'];
+            }
+        } else {
+            $message = ['status' => false, 'data' => 'Required missing values'];
+        }
+
+        echo json_encode($message);
+    }
+
+    public function getUserData($db)
+    {
+        session_start();
+        $requestData = isset($_POST['session_token']) ? $_POST : json_decode(file_get_contents('php://input'), true);
+        $message = [];
+
+        if (!empty($requestData['session_token'])) {
+            $sessionToken = $requestData['session_token'];
+            if ($_SESSION['session_token'] === $sessionToken) {
+                // Session token is valid, retrieve user data
+                $query = "SELECT * FROM patients WHERE session_token = ?";
+                $stmt = $db->prepare($query);
+                $stmt->bind_param('s', $sessionToken);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    $user = $result->fetch_assoc();
+                    $message = ['status' => true, 'data' => 'User data retrieved successfully', 'user' => $user];
+                } else {
+                    $message = ['status' => false, 'data' => 'Invalid session token'];
+                }
+            } else {
+                $message = ['status' => false, 'data' => 'Invalid session token'];
             }
         } else {
             $message = ['status' => false, 'data' => 'Required missing values'];

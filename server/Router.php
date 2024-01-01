@@ -23,6 +23,7 @@ $routes = [
     "/doctor-appointment/server/deleteUser/(\w+)" => "UserController@deleteUser",
     "/doctor-appointment/server/updateUser/(\w+)" => "UserController@updateUser",
     "/doctor-appointment/server/getPatients" => "PatientController@getPatients",
+    "/doctor-appointment/server/getUserData" => "PatientController@getUserData",
     "/doctor-appointment/server/registerPatient" => "PatientController@registerPatient",
     "/doctor-appointment/server/loginPatient" => "PatientController@loginPatient",
     "/doctor-appointment/server/updatePatient/(\w+)" => "PatientController@updatePatient",
