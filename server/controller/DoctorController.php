@@ -1,5 +1,4 @@
 <?php
-
 class DoctorController
 {
     public function generateDoctorID($db)
@@ -190,7 +189,6 @@ class DoctorController
 
     public function loginDoctor($db)
     {
-        session_start();
         $message = [];
         $requestData = isset($_POST['name']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         if (!empty($requestData['email']) && !empty($requestData['password'])) {
@@ -202,15 +200,42 @@ class DoctorController
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
-                $user = $result->fetch_assoc();
-                $sessionToken = bin2hex(random_bytes(16));
-                $_SESSION['session_token'] = $sessionToken;
-                $message = ['status' => true, 'data' => 'Login successful','session_token' => $sessionToken, 'user' =>$user,"userType" => "doctor"];
+                $doctor = $result->fetch_assoc();
+                $message = ['status' => true, 'data' => 'Login successful','doctor' =>$doctor['id'],"userType" => "doctor"];
             } else {
                 $message = ['status' => false,'data' => 'Invalid email and password'];
             }
         } else {
             $message = ['status' => false, 'data' => 'Missing Required Fields'];
+        }
+
+        echo json_encode($message);
+    }
+
+
+    public function getCurrentDoctor($db)
+    {
+        $message = [];
+        $token = apache_request_headers();
+        if ( isset($token['authorization'])) {
+            $userId = $token['authorization'];
+            $query = "SELECT * FROM doctors WHERE id = ?";
+            $stmt = $db->prepare($query);
+            $stmt->bind_param('s', $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $doctor = $result->fetch_assoc();
+                $message = [
+                    'status' => true,
+                    'data' => 'User data retrieved successfully',
+                    'doctor' => $doctor
+                ];
+            } else {
+                $message = ['status' => false, 'data' => 'Invalid session token'];
+            }
+        } else {
+            $message = ['status' => false, 'data' => 'Invalid session or session expired'];
         }
 
         echo json_encode($message);

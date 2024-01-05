@@ -12,7 +12,7 @@ const AddDoctorSchedule = () => {
     const [updateDoctorSchedules] = useUpdateDoctorSchedulesMutation();
     const DoctorsInfo = data?.data || [];
     const initialValues = {
-        date: '',
+        date: params_row?.date || '',
         day: params_row?.day || '',
         from_time: params_row?.from_time || '',
         to_time: params_row?.to_time || '',
@@ -77,7 +77,7 @@ const AddDoctorSchedule = () => {
     }
     return (
 
-        <div className="w-full lg:w-[85%] p-2 mt-10 mx-auto">
+        <div className="w-full lg:w-[95%] p-2 mt-10 mx-auto shadow rounded bg-white">
             <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
                 <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
                     <Link to='/'> <span className="text-blue-600">Home</span> / </Link>
@@ -87,7 +87,7 @@ const AddDoctorSchedule = () => {
                 <Link className="px-3 py-2 rounded shadow bg-blue-600 text-white" to='/dashboard/doctor-schedule'><MdArrowBack className="inline" size={20} /> <span> Back </span></Link>
             </div>
             <Formik enableReinitialize onSubmit={handleSubmit} initialValues={initialValues} validationSchema={validationSchema}>
-                <Form className="w-full space-y-4 p-3 rounded shadow mt-5 bg-[#FFFFFF]">
+                <Form className="w-full space-y-4 p-3 mt-5 bg-[#FFFFFF]">
                     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="w-full space-y-3">
                             <label htmlFor="" className="text-base font-medium ml-1">Date</label>
@@ -110,12 +110,12 @@ const AddDoctorSchedule = () => {
                     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="w-full space-y-3">
                             <label htmlFor="" className="text-base font-medium ml-1">Start Time</label>
-                            <Field type="text" className="w-full px-3 py-2 rounded border outline-blue-600" name='from_time' placeholder="Enter Start Time" />
+                            <Field type="time" className="w-full px-3 py-2 rounded border outline-blue-600" name='from_time' placeholder="Enter Start Time" />
                             <ErrorMessage name="from_time" component="div" className="text-red-500" />
                         </div>
                         <div className="w-full space-y-3">
                             <label htmlFor="" className="text-base font-medium ml-1">End Time</label>
-                            <Field type="text" className="w-full px-3 py-2 rounded border outline-blue-600" name='to_time' placeholder="Enter End Time" />
+                            <Field type="time" className="w-full px-3 py-2 rounded border outline-blue-600" name='to_time' placeholder="Enter End Time" />
                             <ErrorMessage name="to_time" component="div" className="text-red-500" />
                         </div>
                     </div>
@@ -129,8 +129,8 @@ const AddDoctorSchedule = () => {
                             <label htmlFor="" className="text-base font-medium ml-1">Status</label>
                             <Field as="select" className="w-full px-3 py-2 rounded border outline-blue-600" name='status'>
                                 <option value="">---select doctor status---</option>
-                                <option value="available">available</option>
-                                <option value="unavailable">unavailable</option>
+                                <option value="active">active</option>
+                                <option value="unactive">unactive</option>
                             </Field>
                             <ErrorMessage name="status" component="div" className="text-red-500" />
                         </div>

@@ -1,10 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../BASE_URL";
-
+import Cookies from "js-cookie";
+const setToken = (token) => {
+    Cookies.set('doctorToken', token)
+}
+const getToken = () => {
+    return Cookies.get('doctorToken')
+}
 export const DoctorSlices = createApi({
     reducerPath: 'DoctorSlices',
     baseQuery: fetchBaseQuery({
-        baseUrl: BASE_URL
+        baseUrl: BASE_URL,
+        prepareHeaders: (headers) => {
+            const token = getToken();
+            if (token) {
+                headers.set('Authorization',token);
+            }
+            return headers;
+        },
     }),
     tagTypes: ['doctor'],
     endpoints: (builder) => ({
@@ -21,10 +34,21 @@ export const DoctorSlices = createApi({
 
         loginDoctor: builder.mutation({
             query: (loginDoctor) => ({
-                url: '',
+                url: 'loginDoctor',
                 method: 'POST',
                 body: loginDoctor
             }),
+            onQueryStarted: async (args, { queryFulfilled }) => {
+                try {
+                    const result = await queryFulfilled;
+                    if (result) {
+                        console.log(result);
+                        setToken(result?.data?.doctor);
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            },
             invalidatesTags: ['doctor']
         }),
 
@@ -65,10 +89,10 @@ export const DoctorSlices = createApi({
             providesTags: ['doctor']
         }),
 
-        getDoctor: builder.query({
+        getCurrentDoctor: builder.query({
             query: () => {
                 return {
-                    url: 'getDoctor',
+                    url: 'getCurrentDoctor',
                     method: 'GET',
                 }
             },
@@ -84,6 +108,6 @@ export const {
     useDeleteDoctorMutation,
     useUpdateDoctorMutation,
     useGetDoctorsQuery,
-    useGetDoctorQuery,
+    useGetCurrentDoctorQuery,
     useGetDoctorsWithScheduleQuery
 } = DoctorSlices

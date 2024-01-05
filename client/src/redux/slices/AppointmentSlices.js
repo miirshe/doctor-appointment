@@ -43,6 +43,15 @@ export const AppointmentSlices = createApi({
                 }
             },
             providesTags : ['appointment']
+        }),
+        GetAppointmentDetails : builder.query({
+            query : () => {
+                return {
+                    url : 'GetAppointmentDetails',
+                    method : 'GET',
+                }
+            },
+            providesTags : ['appointment']
         })
 
 
@@ -53,5 +62,6 @@ export const {
     useCreateAppointmentMutation,
     useUpdateAppointmentMutation,
     useDeleteAppointmentMutation,
-    useGetAppointmentsQuery
+    useGetAppointmentsQuery,
+    useGetAppointmentDetailsQuery
 } = AppointmentSlices

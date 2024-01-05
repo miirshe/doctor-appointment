@@ -38,9 +38,9 @@ const DoctorSchedule = () => {
             field: 'status', headerName: 'Status', width: 130,
             renderCell: (params) => (
                 <span
-                    className={`font-bold ${params.row.status == 'available' ? 'bg-green-600 text-white px-3 py-1 rounded' : 'bg-red-600 text-white px-3 py-1 rounded'}`}
+                    className={`font-bold ${params.row.status == 'active' ? 'bg-green-600 text-white px-3 py-1 rounded' : 'bg-red-600 text-white px-3 py-1 rounded'}`}
                 >
-                    {params.row.status == 'available' ? 'available' : 'unavailable'}
+                    {params.row.status == 'active' ? 'active' : 'unactive'}
                 </span>
             )
         },
@@ -63,7 +63,7 @@ const DoctorSchedule = () => {
         },
     ];
     return (
-        <div className="w-full lg:w-[85%] p-3 bg-white mt-10 mx-auto">
+        <div className="w-full lg:w-[95%] p-3 bg-white mt-10 mx-auto shadow rounded">
             <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
                 <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
                     <Link to='/'> <span className="text-blue-600">Home</span> / </Link>

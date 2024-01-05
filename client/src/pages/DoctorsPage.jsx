@@ -4,6 +4,7 @@ import { useGetDoctorsQuery } from "../redux/slices/DoctorSlices"
 import { MdVerified } from "react-icons/md";
 import { useGetSpecialitiesQuery } from "../redux/slices/SpecialitiesSlices";
 import { useState } from "react";
+import { Modal } from "@mui/material";
 
 const DoctorsPage = () => {
     const { data: doctors = [] } = useGetDoctorsQuery();
@@ -29,7 +30,7 @@ const DoctorsPage = () => {
             <div className="w-full flex flex-row justify-start items-center gap-5">
                 <Link className=" hover:text-blue-600 transition-all ease-in-out" to='/'>Home</Link>
                 <IoIosArrowForward className="inline" size={15} />
-                <span>About</span>
+                <span>Doctors</span>
             </div>
             <div className="w-full mt-5 space-y-3">
                 <input className="w-full p-3 rounded border outline-blue-600" type="text" placeholder="Search Doctor Specialities ..."
@@ -55,7 +56,8 @@ const DoctorsPage = () => {
                         return doctor.speciality.toLowerCase().includes(searchText.toLowerCase());
                     }).map(doctor => {
                         return (
-                            <div key={doctor?.id} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out  hover:shadow-md bg-white">
+                            <Link to={`/doctor-detail-page/${doctor?.id}`} key={doctor?.id} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out  hover:shadow-md bg-white"
+                            state={doctor}>
                                 <img className="w-28 h-28 mx-auto rounded-full object-center bg-cover" src={doctor?.image} alt="" />
                                 <div className="w-full space-y-2">
                                     <hr className="w-full mt-2" />
@@ -75,12 +77,12 @@ const DoctorsPage = () => {
                                     </div>
 
                                 </div>
-                            </div>
+                            </Link>
                         )
                     })
                         : filteredDoctor?.map(doctor => {
                             return (
-                                <div key={doctor?.id} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out hover:shadow-md bg-white space-y-2">
+                                <Link key={doctor?.id} to={`/doctor-detail-page/${doctor?.id}`} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out hover:shadow-md bg-white space-y-2" state={doctor}>
                                     <img className="w-28 h-28 mx-auto rounded-full object-center bg-cover" src={doctor?.image} alt="" />
                                     <div className="w-full space-y-2">
                                         <hr className="w-full mt-2" />
@@ -98,9 +100,8 @@ const DoctorsPage = () => {
                                                 <button className="w-full font-light text-sm text-center">Book Now</button>
                                             </div>
                                         </div>
-
                                     </div>
-                                </div>
+                                </Link>
                             )
                         })
                 }

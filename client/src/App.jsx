@@ -2,8 +2,9 @@ import { Route, Routes } from "react-router-dom"
 import { Toaster } from 'react-hot-toast';
 import {
   About, AddDoctor, AddDoctorSchedule, AddHospital, AddPatients, AddUser, Contact, Dashboard,
-  DashboardLayout, Diagnoses, DoctorLogin,
+  DashboardLayout, Diagnoses, DoctorDetialPage, DoctorLogin,
   DoctorRegister, DoctorSchedule, Doctors, DoctorsPage, Home, HospitalList, PageLayouts,
+  PatientAppointment,
   PatientLogin, PatientRegister, Patients, Specialities, Users
 } from "./ExportFiles";
 const App = () => {
@@ -14,8 +15,10 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/" element={<Home />} />
           <Route path="/doctors-page" element={<DoctorsPage />} />
+          <Route path="/doctor-detail-page/:id" element={<DoctorDetialPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/patient-appointment" element={<PatientAppointment/>} />
           <Route path="/doctor-login" element={<DoctorLogin />} />
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/patient-login" element={<PatientLogin />} />

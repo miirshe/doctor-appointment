@@ -1,10 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../BASE_URL";
-
+import Cookies, { } from 'js-cookie';
+const setToken = (token) => {
+    Cookies.set('patientToken', token)
+}
+const getToken = () => {
+    return Cookies.get('patientToken')
+}
 export const PatientSlices = createApi({
     reducerPath: 'PatientSlices',
     baseQuery: fetchBaseQuery({
-        baseUrl: BASE_URL
+        baseUrl: BASE_URL,
+        prepareHeaders: (headers) => {
+            const token = getToken();
+            if (token) {
+                headers.set('Authorization',token);
+            }
+            return headers;
+        },
     }),
     tagTypes: ['patient'],
     endpoints: (builder) => ({
@@ -18,17 +31,28 @@ export const PatientSlices = createApi({
         }),
         patientLogin: builder.mutation({
             query: (patientLogin) => ({
-                url: '',
+                url: 'loginPatient',
                 method: 'POST',
                 body: patientLogin
             }),
+            onQueryStarted: async (args, { queryFulfilled }) => {
+                try {
+                    const result = await queryFulfilled;
+                    if (result) {
+                        console.log(result);
+                        setToken(result?.data?.patient);
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            },
             invalidatesTags: ['patient']
         }),
-        updatePatient:builder.mutation({
-            query : ({id , updatePatient}) => ({
-                url : `updatePatient/${id}`,
-                method : 'POST',
-                body : updatePatient
+        updatePatient: builder.mutation({
+            query: ({ id, updatePatient }) => ({
+                url: `updatePatient/${id}`,
+                method: 'POST',
+                body: updatePatient
             })
         }),
         deletePatient: builder.mutation({
@@ -56,6 +80,15 @@ export const PatientSlices = createApi({
             },
             providesTags: ['patient']
         }),
+        getCurrentPatient: builder.query({
+            query: () => {
+                return {
+                    url: 'getCurrentPatient',
+                    method: 'GET',
+                }
+            },
+            providesTags: ['patient']
+        })
     })
 })
 
@@ -64,5 +97,7 @@ export const {
     useUpdatePatientMutation,
     useDeletePatientMutation,
     useGetPatientsQuery,
-    useGetPatientQuery
+    useGetPatientQuery,
+    usePatientLoginMutation,
+    useGetCurrentPatientQuery
 } = PatientSlices

@@ -43,7 +43,7 @@ const AddUser = () => {
         }
     }
     return (
-        <div className="w-full lg:w-[85%] p-2 mt-10 mx-auto">
+        <div className="w-full lg:w-[95%] p-2 mt-10 mx-auto shadow rounded bg-white">
             <div className="w-full flex flex-col md:flex-row justify-start items-start md:justify-between md:items-center gap-5">
                 <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
                     <Link to='/'> <span className="text-blue-600">Home</span> / </Link>
@@ -53,7 +53,7 @@ const AddUser = () => {
                 <Link className="px-3 py-2 rounded shadow bg-blue-600 text-white" to='/dashboard/users'><MdArrowBack className="inline" size={20} /> <span> Back </span></Link>
             </div>
             <Formik enableReinitialize onSubmit={handleSubmit} validationSchema={validationSchema} initialValues={initialValues}>
-                <Form className="w-full space-y-4 p-3 rounded shadow mt-5 bg-[#FFFFFF]">
+                <Form className="w-full space-y-4 p-3 mt-5 bg-[#FFFFFF]">
                     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="w-full space-y-3">
                             <label htmlFor="" className="text-base font-medium ml-1">Name</label>

@@ -1,8 +1,12 @@
 import { ErrorMessage, Field, Formik, Form } from "formik"
+import toast from "react-hot-toast"
 import { IoIosArrowForward } from "react-icons/io"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as Yup from 'yup'
+import { useLoginDoctorMutation } from "../redux/slices/DoctorSlices"
 const DoctorLogin = () => {
+    const navigate = useNavigate();
+    const [ loginDoctor ] = useLoginDoctorMutation();
     const initialRegister = {
         email: '',
         password: '',
@@ -12,7 +16,19 @@ const DoctorLogin = () => {
         password: Yup.string().required('password field is required'),
     })
     const handleSubmit = (values) => {
-        console.log(values);
+        const {email, password} = values;
+        loginDoctor({
+            email : email , password : password
+        }).then((res) => {
+            const status = res?.data?.status;
+            const message = res?.data?.data;
+            if (status) {
+                toast.success(message)
+                navigate('/dashboard')
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
     return (
         <div className="w-full md:w-[95%] lg:w-[90%] mx-auto p-4 mt-20">

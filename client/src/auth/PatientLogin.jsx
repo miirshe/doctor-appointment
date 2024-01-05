@@ -1,8 +1,12 @@
 import { ErrorMessage, Field, Formik, Form } from "formik"
 import { IoIosArrowForward } from "react-icons/io"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as Yup from 'yup'
+import { usePatientLoginMutation } from "../redux/slices/PatientSlices"
+import toast from "react-hot-toast"
 const PatientLogin = () => {
+    const navigate = useNavigate();
+    const [patientLogin] = usePatientLoginMutation();
     const initialRegister = {
         email: '',
         password: '',
@@ -12,7 +16,19 @@ const PatientLogin = () => {
         password: Yup.string().required('password field is required'),
     })
     const handleSubmit = (values) => {
-        console.log(values);
+        const {email, password} = values;
+        patientLogin({
+            email : email , password : password
+        }).then((res) => {
+            const status = res?.data?.status;
+            const message = res?.data?.data;
+            if (status) {
+                toast.success(message)
+                navigate('/dashboard')
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
     return (
         <div className="w-full md:w-[95%] lg:w-[90%] mx-auto p-4 mt-20">
@@ -35,7 +51,6 @@ const PatientLogin = () => {
                     <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-white hover:text-blue-600
                     transition-all ease-in-out" type="submit">Login Now</button>
                     <p className="text-sm text-center mt-5">Don't have an account <Link to='/patient-register' className="text-red-500">Register</Link></p>
-
                 </Form>
             </Formik>
         </div>

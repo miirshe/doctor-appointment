@@ -1,8 +1,8 @@
 <?php
 header("Content-Type: application/json");
-header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization");
 include './controller/UserController.php';
 include './controller/PatientController.php';
 include './controller/HospitalController.php';
@@ -26,6 +26,7 @@ $routes = [
     "/doctor-appointment/server/getUserData" => "PatientController@getUserData",
     "/doctor-appointment/server/registerPatient" => "PatientController@registerPatient",
     "/doctor-appointment/server/loginPatient" => "PatientController@loginPatient",
+    "/doctor-appointment/server/getCurrentPatient" => "PatientController@getCurrentPatient",
     "/doctor-appointment/server/updatePatient/(\w+)" => "PatientController@updatePatient",
     "/doctor-appointment/server/deletePatient/(\w+)" => "PatientController@deletePatient",
     "/doctor-appointment/server/getPatient/(\w+)" => "PatientController@getPatient",
@@ -37,6 +38,7 @@ $routes = [
     "/doctor-appointment/server/createDoctor" => "DoctorController@createDoctor",
     "/doctor-appointment/server/loginDoctor" => "DoctorController@loginDoctor",
     "/doctor-appointment/server/getDoctors" => "DoctorController@getDoctors",
+    "/doctor-appointment/server/getCurrentDoctor" => "DoctorController@getCurrentDoctor",
     "/doctor-appointment/server/getDoctorsWithSchedule" => "DoctorController@getDoctorsWithSchedule",
     "/doctor-appointment/server/getDoctor/(\w+)" => "DoctorController@getDoctor",
     "/doctor-appointment/server/updateDoctor/(\w+)" => "DoctorController@updateDoctor",
@@ -58,6 +60,7 @@ $routes = [
     "/doctor-appointment/server/updateDoctorSchedule/(\w+)" => "DoctorScheduleController@updateDoctorSchedule",
     "/doctor-appointment/server/createAppointment" => "AppointmentController@createAppointment",
     "/doctor-appointment/server/getAppointments" => "AppointmentController@getAppointments",
+    "/doctor-appointment/server/GetAppointmentDetails" => "AppointmentController@GetAppointmentDetails",
     "/doctor-appointment/server/getAppointment/(\w+)" => "AppointmentController@getAppointment",
     "/doctor-appointment/server/deleteAppointment/(\w+)" => "AppointmentController@deleteAppointment",
     "/doctor-appointment/server/updateAppointment/(\w+)" => "AppointmentController@updateAppointment",

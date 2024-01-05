@@ -29,7 +29,7 @@ class DoctorScheduleController
         $id = $this->generateDoctorScheduleID($db);
         $requestData = json_decode(file_get_contents('php://input'));
         if (
-            !empty($requestData->day) && !empty($requestData->from_time)
+            !empty($requestData->date) && !empty($requestData->day) && !empty($requestData->from_time)
             && !empty($requestData->to_time) && !empty($requestData->appointment_limit)  && !empty($requestData->status)
             && !empty($requestData->doc_id)
         ) {
@@ -40,8 +40,8 @@ class DoctorScheduleController
             $appointment_limit = trim($requestData->appointment_limit);
             $status = $requestData->status;
             $doc_id = trim($requestData->doc_id);
-            $query = "INSERT INTO  doctor_schedules(`id`,`day`,`from_time`,`to_time`,`appointment_limit`,`status`,`doc_id`) 
-            VALUES ('$id','$day','$from_time','$to_time','$appointment_limit','$status','$doc_id')";
+            $query = "INSERT INTO  doctor_schedules(`id`,`date`,`day`,`from_time`,`to_time`,`appointment_limit`,`status`,`doc_id`) 
+            VALUES ('$id','$date','$day','$from_time','$to_time','$appointment_limit','$status','$doc_id')";
             $result = $db->query($query);
             if ($result) {
                 $message = ['status' => true, "data" => "successfully inserted"];
@@ -120,7 +120,7 @@ class DoctorScheduleController
         $message = [];
         $requestData = json_decode(file_get_contents('php://input'));
         if (
-            !empty($requestData->day) && !empty($requestData->from_time)
+            !empty($requestData->date) && !empty($requestData->day) && !empty($requestData->from_time)
             && !empty($requestData->to_time) && !empty($requestData->appointment_limit)  && !empty($requestData->status)
             && !empty($requestData->doc_id)
         ) {
@@ -131,7 +131,7 @@ class DoctorScheduleController
             $appointment_limit = trim($requestData->appointment_limit);
             $status = $requestData->status;
             $doc_id = trim($requestData->doc_id);
-            $query = "UPDATE doctor_schedules SET  `day` = '$day',`from_time` = '$from_time', 
+            $query = "UPDATE doctor_schedules SET `date` = '$$requestData->date', `day` = '$day',`from_time` = '$from_time', 
             `to_time` = '$to_time', `appointment_limit` = '$appointment_limit' , `status` = '$status',`doc_id` = '$doc_id' WHERE `id` = '$id'";
             $result = $db->query($query);
             if ($result) {

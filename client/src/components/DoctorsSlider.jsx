@@ -34,7 +34,7 @@ const DoctorsSlider = () => {
           {
             DoctorData?.map(doctor => {
               return (
-                <Link to={`doctor-detail/${doctor?.id}`} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out  hover:shadow-md" key={doctor.id}>
+                <Link to={`doctor-detail-page/${doctor?.id}`} className="w-full p-2 rounded shadow cursor-pointer hover:scale-x-105 transition-all ease-in-out  hover:shadow-md" key={doctor.id} state={doctor}>
                   <img className="w-28 h-28 mx-auto rounded-full object-center bg-cover" src={doctor?.image} alt="" />
                   <div className="w-full space-y-3">
                     <hr className="w-full mt-2" />
