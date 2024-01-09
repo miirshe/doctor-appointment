@@ -120,7 +120,7 @@ const AddDoctor = () => {
         <div className="flex flex-row justify-start items-center gap-3 text-xs font-light lg:text-base">
           <Link to='/'> <span className="text-blue-600">Home</span> / </Link>
           <Link className="hover:text-blue-600" to='/dashboard'> Dashboard </Link>
-          <span> / Doctors </span>
+          <span> / Add Doctors </span>
         </div>
         <Link className="px-3 py-2 rounded shadow bg-blue-600 text-white" to='/dashboard/doctors'><MdArrowBack className="inline" size={20} /> <span> Back </span></Link>
       </div>

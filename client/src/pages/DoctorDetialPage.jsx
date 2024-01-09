@@ -3,14 +3,24 @@ import { Link, useLocation } from "react-router-dom"
 import { useGetDoctorSchedulesQuery } from "../redux/slices/DoctorScheduleSlices";
 import { useGetDoctorsQuery } from "../redux/slices/DoctorSlices";
 import Carousel from "react-multi-carousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import toast from "react-hot-toast";
 import { useCreateAppointmentMutation } from "../redux/slices/AppointmentSlices";
 import { useGetCurrentPatientQuery } from "../redux/slices/PatientSlices";
+import Cookies from "js-cookie";
 const DoctorDetialPage = () => {
+  const [patientAuth, setPatientAuth] = useState(false);
+  const patientToken = Cookies.get('patientToken');
+  useEffect(() => {
+    if (patientToken) {
+      setPatientAuth(true);
+    } else {
+      setPatientAuth(false);
+    }
+  }, [])
   const { data: patientData } = useGetCurrentPatientQuery();
   const currentPatient = patientData?.user || [];
   const [createAppointment] = useCreateAppointmentMutation();
@@ -81,7 +91,7 @@ const DoctorDetialPage = () => {
     const { date, day, time, symptom_desc } = values
     createAppointment({
       date: date, day: day, time: time, symptom_desc: symptom_desc, doc_id: doc_id, pat_id: pat_id,
-      status : 'pending'
+      status: 'pending'
     }).then((res) => {
       const status = res?.data?.status;
       const message = res?.data?.data;
@@ -212,7 +222,12 @@ const DoctorDetialPage = () => {
                 })
               }
             </div>
-            <button className="w-full px-3 py-2 shadow rounded bg-blue-600 text-white" onClick={handleOpen}>Make Appointment</button>
+            {
+              !patientAuth && <Link className="w-full mt-20 px-3 py-2 shadow rounded bg-blue-600 text-white" to='/patient-login'>Make Appointment</Link>
+            }{
+              patientAuth && <button className="w-full mt-20 px-3 py-2 shadow rounded bg-blue-600 text-white" onClick={handleOpen}>Make Appointment</button>
+            }
+
           </div>
         </div>
 

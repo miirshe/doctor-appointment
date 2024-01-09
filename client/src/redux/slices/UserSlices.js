@@ -1,60 +1,91 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '../BASE_URL'
+import Cookies from 'js-cookie'
+const setToken = (token) => {
+    Cookies.set('userToken', token)
+}
+const getToken = () => {
+    return Cookies.get('userToken')
+}
 export const UserSlices = createApi({
-    reducerPath : 'UserSlices',
-    baseQuery : fetchBaseQuery({
-        baseUrl : BASE_URL
+    reducerPath: 'UserSlices',
+    baseQuery: fetchBaseQuery({
+        baseUrl: BASE_URL,
+        prepareHeaders: (headers) => {
+            const token = getToken();
+            if (token) {
+                headers.set('Authorization', token);
+            }
+            return headers;
+        },
     }),
-    tagTypes : ['user'],
-    endpoints : (builder) => ({
+    tagTypes: ['user'],
+    endpoints: (builder) => ({
 
-        registerUser : builder.mutation({
-            query : (newData) => ({
-                url : 'registerUser',
-                method : 'POST',
-                body : newData
+        registerUser: builder.mutation({
+            query: (newData) => ({
+                url: 'registerUser',
+                method: 'POST',
+                body: newData
             }),
-            invalidatesTags : ['user']
+            invalidatesTags: ['user']
         }),
-
-
-        updateUser : builder.mutation({
-            query : ({id , updateUser}) => ({
-                url : `updateUser/${id}`,
-                method : 'POST',
-                body : updateUser
+        loginUser: builder.mutation({
+            query: (loginUser) => ({
+                url: 'loginUser',
+                method: 'POST',
+                body: loginUser
             }),
-            invalidatesTags : ['user']
-        }),
-
-
-        deleteUser : builder.mutation({
-            query: (id) => ({
-                url : `deleteUser/${id}`,
-                method : 'POST'
-            }),
-            invalidatesTags : ['user']
-        }),
-
-
-        getUsers : builder.query({
-            query : () => {
-                return{
-                    url : 'getUsers',
-                    method : 'GET'
+            onQueryStarted: async (args, { queryFulfilled }) => {
+                try {
+                    const result = await queryFulfilled;
+                    if (result) {
+                        console.log(result);
+                        setToken(result?.data?.user);
+                    }
+                } catch (err) {
+                    console.log(err);
                 }
             },
-            providesTags:['user']
+            invalidatesTags: ['user']
+        }),
+        updateUser: builder.mutation({
+            query: ({ id, updateUser }) => ({
+                url: `updateUser/${id}`,
+                method: 'POST',
+                body: updateUser
+            }),
+            invalidatesTags: ['user']
         }),
 
-        getUser : builder.query({
-            query : (id) =>{
+
+        deleteUser: builder.mutation({
+            query: (id) => ({
+                url: `deleteUser/${id}`,
+                method: 'POST'
+            }),
+            invalidatesTags: ['user']
+        }),
+
+
+        getUsers: builder.query({
+            query: () => {
                 return {
-                    url : `getUser/${id}`,
-                    method : 'GET'
+                    url: 'getUsers',
+                    method: 'GET'
                 }
-            } ,
-            providesTags:['user']
+            },
+            providesTags: ['user']
+        }),
+
+        getUser: builder.query({
+            query: () => {
+                return {
+                    url: 'getCurrentUser',
+                    method: 'GET'
+                }
+            },
+            providesTags: ['user']
         })
 
 
@@ -66,5 +97,6 @@ export const {
     useUpdateUserMutation,
     useDeleteUserMutation,
     useGetUsersQuery,
-    useGetUserQuery
+    useGetUserQuery,
+    useLoginUserMutation
 } = UserSlices;

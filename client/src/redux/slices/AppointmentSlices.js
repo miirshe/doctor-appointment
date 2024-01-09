@@ -19,7 +19,8 @@ export const AppointmentSlices = createApi({
         }),
 
         updateAppointment: builder.mutation({
-            query: ({ id, updateAppointment }) => ({
+            query: ({ id, updateAppointment }) => (
+                console.log(updateAppointment,id),{
                 url: `updateAppointment/${id}`,
                 method: 'POST',
                 body: updateAppointment

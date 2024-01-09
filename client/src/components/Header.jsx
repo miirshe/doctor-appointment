@@ -9,6 +9,11 @@ import toast from "react-hot-toast";
 const Header = () => {
     const [patientAuth, setPatientAuth] = useState(false);
     const patientToken = Cookies.get('patientToken');
+    const userToken = Cookies.get('userToken');
+    const doctorToken = Cookies.get('doctorToken');
+    const [doctorAuth, setDoctorAuth] = useState(false);
+
+    const [userAuth, setUserAuth] = useState(false);
     useEffect(() => {
         if (patientToken) {
             setPatientAuth(true);
@@ -16,6 +21,24 @@ const Header = () => {
             setPatientAuth(false);
         }
     }, [])
+
+    useEffect(() => {
+        if (userToken) {
+            setUserAuth(true);
+        } else {
+            setUserAuth(false);
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if (doctorToken) {
+            setDoctorAuth(true);
+        } else {
+            setDoctorAuth(false);
+        }
+    }, [])
+
     const [scrolling, setShowScrolling] = useState(false);
     useEffect(() => {
         const handleWindowScrolling = () => {
@@ -57,8 +80,8 @@ const Header = () => {
                     <FaRegUser className="inline" size={20} /> <span>Patient Login</span></Link>
                 <hr className="w-full" />
                 <Link className="w-full flex flex-row justify-start items-start gap-3 
-                p-2 hover:bg-slate-200 transition-all ease-in-out" to='admin-login'>
-                    <FaRegUser className="inline" size={20} /> <span>Admin Login</span></Link>
+                p-2 hover:bg-slate-200 transition-all ease-in-out" to='user-login'>
+                    <FaRegUser className="inline" size={20} /> <span>User Login</span></Link>
             </div>
         </div>
     )
@@ -83,34 +106,49 @@ const Header = () => {
                         <Link to='/about' className="hover:text-blue-600 transition-all ease-in-out">About us</Link>
                         <Link to='/contact' className="hover:text-blue-600 transition-all ease-in-out">Contact us</Link>
                         {
-                            !patientAuth && <>
-                                <div className="w-[20%] hidden lg:block">
-                                    <button className="bg-blue-600 text-white px-5 py-2 rounded" onClick={() => setShowRegisteLinks(!showRegisteLinks)}>
-                                        Login
+                            (!patientAuth && !userAuth && !doctorAuth) && (
+                                <>
+                                    <div className="w-[20%] hidden lg:block">
+                                        <button className="bg-blue-600 text-white px-5 py-2 rounded" onClick={() => setShowRegisteLinks(!showRegisteLinks)}>
+                                            Login
+                                            {
+                                                showRegisteLinks ? (<IoIosArrowUp className="ml-2 inline" size={18} />) : (<IoIosArrowDown className="ml-2 inline" size={20} />)
+                                            }
+                                        </button>
                                         {
-                                            showRegisteLinks ? (<IoIosArrowUp className="ml-2 inline" size={18} />) : (<IoIosArrowDown className="ml-2 inline" size={20} />)
+                                            showRegisteLinks && RegisterLinks
                                         }
-                                    </button>
-                                    {
-                                        showRegisteLinks && RegisterLinks
-                                    }
-                                </div>
-                                <div className="w-full lg:hidden flex flex-col justify-start items-start gap-5 shadow rounded-md">
-                                    <Link className="w-full flex flex-row justify-start items-start gap-3 
+                                    </div>
+                                    <div className="w-full lg:hidden flex flex-col justify-start items-start gap-5">
+                                        <Link className="w-full flex flex-row justify-start items-start gap-3 
                 p-2 hover:text-blue-600 transition-all ease-in-out" to='doctor-login'>
-                                        <FaUserMd className="inline" size={20} /> <span>Doctor Login</span></Link>
-                                    <hr className="w-full" />
-                                    <Link className="w-full flex flex-row justify-start items-start gap-3 
+                                            <FaUserMd className="inline" size={20} /> <span>Doctor Login</span></Link>
+                                        <hr className="w-full" />
+                                        <Link className="w-full flex flex-row justify-start items-start gap-3 
                 p-2 hover:text-blue-600 transition-all ease-in-out" to='patient-login'>
-                                        <FaRegUser className="inline" size={20} /> <span>Patient Login</span></Link>
-                                </div>
-                            </>
+                                            <FaRegUser className="inline" size={20} /> <span>Patient Login</span></Link>
+                                        <Link className="w-full flex flex-row justify-start items-start gap-3 
+                p-2 hover:bg-slate-200 transition-all ease-in-out" to='user-login'>
+                                            <FaRegUser className="inline" size={20} /> <span>User Login</span></Link>
+                                    </div>
+                                </>
+                            )
                         }
                         {
                             patientAuth && <>
                                 <Link to='/patient-appointment' className="hover:text-blue-600 transition-all ease-in-out">Appointments</Link>
                                 <button className="bg-blue-600 text-white px-5 py-2 rounded shadow" onClick={handlePatientLogout}>Logout</button>
                             </>
+                        }
+                        {
+                            userAuth && <Link to='/dashboard' className="hover:text-blue-600 transition-all ease-in-out">
+                                Dashboard
+                            </Link>
+                        }
+                        {
+                            doctorAuth && <Link to='/dashboard' className="hover:text-blue-600 transition-all ease-in-out">
+                                Dashboard
+                            </Link>
                         }
                     </div>
                 </div>

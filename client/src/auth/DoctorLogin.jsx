@@ -25,6 +25,8 @@ const DoctorLogin = () => {
             if (status) {
                 toast.success(message)
                 navigate('/dashboard')
+            }else{
+                toast.error(message);
             }
         }).catch(err => {
             console.log(err);

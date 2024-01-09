@@ -24,7 +24,9 @@ const PatientLogin = () => {
             const message = res?.data?.data;
             if (status) {
                 toast.success(message)
-                navigate('/dashboard')
+                navigate('/')
+            }else{
+                toast.error(message);
             }
         }).catch(err => {
             console.log(err);
