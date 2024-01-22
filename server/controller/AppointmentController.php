@@ -25,21 +25,21 @@ class AppointmentController
 
     public function createAppointment($db)
     {
-        $message = [];
         $id = $this->generateAppointmentID($db);
-        $requestData = json_decode(file_get_contents('php://input'));
+        $requestData = isset($_POST['date']) ? $_POST : json_decode(file_get_contents('php://input'), true);
+        $message = [];
         if (
-            !empty($requestData->date)  && !empty($requestData->day) && !empty($requestData->time)
-            && !empty($requestData->symptom_desc)
-            && !empty($requestData->doc_id) && !empty($requestData->pat_id) && !empty($requestData->status)
+            !empty($requestData['date']) && !empty($requestData['day']) && !empty($requestData['time'])
+            && !empty($requestData['doc_id']) && !empty($requestData['pat_id']) && !empty($requestData['status'])
+            && !empty($requestData['symptom_desc'])
         ) {
-            $date = $requestData->date;
-            $day = $requestData->day;
-            $time = $requestData->time;
-            $symptom_desc = trim($requestData->symptom_desc);
-            $doc_id = trim($requestData->doc_id);
-            $pat_id = trim($requestData->pat_id);
-            $status = trim($requestData->status);
+            $date = $requestData['date'];
+            $day = $requestData['day'];
+            $time = $requestData['time'];
+            $symptom_desc = trim($requestData['symptom_desc']);
+            $doc_id = trim($requestData['doc_id']);
+            $pat_id = trim($requestData['pat_id']);
+            $status = trim($requestData['status']);
 
             $query = "INSERT INTO appointments (`id`,`date`,`day`,`time`,`status`,`doc_id`,`pat_id`,`symptom_desc`)
             VALUES ('$id','$date','$day','$time','$status','$doc_id','$pat_id','$symptom_desc')";
@@ -50,7 +50,7 @@ class AppointmentController
                 $message = ['status' => false, "data" => "failed to create appointment"];
             }
         } else {
-            $message = ['status' => false, "data" => "missing required fields"];
+            $message = ['status' => false, "data" => "missing required fields", 'requestData' => $requestData];
         }
 
         echo json_encode($message);
@@ -58,24 +58,21 @@ class AppointmentController
 
     public function updateAppointment($db, $params)
     {
+        $id = $params;
+        $requestData = isset($_POST['date']) ? $_POST : json_decode(file_get_contents('php://input'), true);
         $message = [];
-        $id = trim($params);
-        $requestData = json_decode(file_get_contents('php://input'));
         if (
-            !empty($requestData->date) && !empty($requestData->day) && !empty($requestData->time)
-            && !empty($requestData->symptom_desc)
-            && !empty($requestData->doc_id) && !empty($requestData->pat_id)
-            && !empty($requestData->status) && !empty($params)
+            !empty($requestData['date']) && !empty($requestData['day']) && !empty($requestData['time'])
+            && !empty($requestData['doc_id']) && !empty($requestData['pat_id']) && !empty($requestData['status'])
+            && !empty($requestData['symptom_desc'])
         ) {
-            $id = trim($params);
-            $date = $requestData->date;
-            $day = $requestData->day;
-            $time = $requestData->time;
-            $diagnose_id = trim($requestData->diagnose_id);
-            $symptom_desc = trim($requestData->symptom_desc);
-            $doc_id = trim($requestData->doc_id);
-            $pat_id = trim($requestData->pat_id);
-            $status = trim($requestData->status);
+            $date = $requestData['date'];
+            $day = $requestData['day'];
+            $time = $requestData['time'];
+            $symptom_desc = trim($requestData['symptom_desc']);
+            $doc_id = trim($requestData['doc_id']);
+            $pat_id = trim($requestData['pat_id']);
+            $status = trim($requestData['status']);
 
             $query = "UPDATE appointments SET `date` = '$date' , `day` = '$day', `time` = '$time' , `status` = '$status',
             `doc_id` = '$doc_id' ,`pat_id` = '$pat_id' , `symptom_desc` = '$symptom_desc' WHERE `id` = '$id'";

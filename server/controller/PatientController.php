@@ -203,10 +203,13 @@ class PatientController
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
                 $patient = $result->fetch_assoc();
+                $session_token = bin2hex(random_bytes(16));
                 $message = [
                     'status' => true,
                     'data' => 'Login successful',
                     'patient' => $patient['id'],
+                    'user' => $patient,
+                    'session_token' => $session_token
                 ];
             } else {
                 $message = ['status' => false, 'data' => 'Invalid email or password'];
