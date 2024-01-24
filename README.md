@@ -27,7 +27,7 @@
 
 ## ``` Supported Users ```
  - User manage  hospitals 
- - User manage docotors
+ - User manage doctors
  - User manage patients
  - User make doctor's schedules
  - And much more ..
@@ -37,12 +37,12 @@
  - Doctor can Manage his specialization
  - Doctor can  manage Patients who applied him
  - Doctor  accepts patients who have applied
- - Doctor can created his schedules (`active` , ``inactive )
+ - Doctor can created his schedules (`active` , `inactive` )
 
 
 ## ``` Supported Patients ```
  - Patient examines doctors with their specialization
- - patient make docotor appointments 
+ - patient make doctor appointments 
  - Patient can follow the appointment (by default is `pending` )
  - Patient make profile 
 
